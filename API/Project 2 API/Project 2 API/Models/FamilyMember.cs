@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Project_2_API.Models;
+
+public partial class FamilyMember
+{
+    public int FamilyMemberId { get; set; }
+
+    public string FamilyMemberName { get; set; } = null!;
+
+    public string FamilyMemberSurname { get; set; } = null!;
+
+    public string FamilyMemberEmail { get; set; } = null!;
+
+    public string FamilyMemberPassword { get; set; } = null!;
+
+    public int FamilyMemberRole { get; set; }
+}
