@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class SignupGroupId extends StatefulWidget {
+  const SignupGroupId({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<SignupGroupId> createState() => _SignupGroupIdState();
 }
 
-class _LoginState extends State<Login> {
+class _SignupGroupIdState extends State<SignupGroupId> {
+  TextEditingController id = TextEditingController();
+  TextEditingController otp = TextEditingController();
+
+  void signUpUser(){
+    if(id.text.isNotEmpty || otp.text.isNotEmpty){
+      Navigator.pushNamed(context, "/home");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController email = TextEditingController();
-    TextEditingController password = TextEditingController();
-
-    logUserIn() {
-      if (email.text.isNotEmpty || password.text.isNotEmpty) {
-        Navigator.pushNamed(context, "/signupmain");
-      }
-    }
-
     return Scaffold(
-      appBar: AppBar(title: Text("Login"), centerTitle: true),
+      appBar: AppBar(title: Text("Sign up"), centerTitle: true),
       body: Container(
         decoration: BoxDecoration(color: const Color.fromARGB(255, 57, 166, 255)),
         alignment: AlignmentDirectional.center,
@@ -38,14 +38,16 @@ class _LoginState extends State<Login> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Text("Enter household group id"),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Email"),
+                    Text("Household id"),
                     TextField(
-                      controller: email,
+                      controller: id,
                       decoration: InputDecoration(
-                        hintText: "Enter your email",
+                        hintText: "Enter your household id",
                         filled: true,
                         border: InputBorder.none,
                       ),
@@ -56,26 +58,24 @@ class _LoginState extends State<Login> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Password"),
+                    Text("OTP"),
                     TextField(
-                      controller: password,
+                      controller: otp,
                       decoration: InputDecoration(
-                        hintText: "Enter your password",
+                        hintText: "Enter your OTP",
                         filled: true,
                         border: InputBorder.none,
                       ),
                     ),
                   ],
                 ),
-
-                Text("Forgot password"),
 
                 SizedBox(
                   width: MediaQuery.widthOf(context) * 0.8,
                   child: ElevatedButton(
                     style: ButtonStyle(),
-                    onPressed: () => logUserIn(),
-                    child: Text("Login"),
+                    onPressed: () => signUpUser(),
+                    child: Text("Sign up"),
                   ),
                 ),
               ],
