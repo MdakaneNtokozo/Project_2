@@ -22,11 +22,6 @@ class _SignupMainState extends State<SignupMain> {
         name.text.isNotEmpty ||
         surname.text.isNotEmpty ||
         selectedItem != null) {
-      print("Name: ${name.text}"); 
-      print("Surname: ${surname.text}");
-      print("Email: ${email.text}");
-      print("Password: ${password.text}");
-
       if(selectedItem == items[0]){
         Navigator.pushNamed(context, "/signupGroupId");
       }else if(selectedItem == items[1]){

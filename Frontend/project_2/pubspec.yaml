@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  table_calendar: ^3.2.0
+  weekly_date_picker: ^1.4.2
+  calendar_date_picker2: ^2.0.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

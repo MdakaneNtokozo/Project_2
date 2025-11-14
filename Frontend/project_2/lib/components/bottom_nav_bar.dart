@@ -25,18 +25,22 @@ class _BottomNavBarState extends State<BottomNavBar> {
       items: navItems,
       currentIndex: currentNavItem,
       onTap: (value) {
-        if (currentNavItem != value) {
+        setState(() {
+          currentNavItem = value;
           
-          if (value == 0) {
-            Navigator.pushNamed(context, "/home");
-          } else if (value == 1) {
-            Navigator.pushNamed(context, "/tasksMain");
+          switch (value) {
+            case 0:
+              {
+                Navigator.pushNamed(context, "/home");
+                break;
+              }
+            case 1:
+              {
+                Navigator.pushNamed(context, "/tasksMain");
+                break;
+              }
           }
-
-          setState(() {
-            currentNavItem = value;
-          });
-        }
+        });
       },
       selectedItemColor: Colors.blue,
       unselectedItemColor: const Color.fromARGB(255, 138, 202, 255),

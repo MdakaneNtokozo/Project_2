@@ -23,7 +23,7 @@ class _SignupInviteState extends State<SignupInvite> {
       permissions.add("");
 
       emailWidgets.add(
-      Container(
+      SizedBox(
         width: MediaQuery.widthOf(context) * 0.8,
         height: MediaQuery.heightOf(context) * 0.2,
         child: Column(
@@ -73,9 +73,9 @@ class _SignupInviteState extends State<SignupInvite> {
   }
 
   void sendInvites() {
-    List<String> emailsEntered = emails
-        .map((controller) => controller.text)
-        .toList();
+    // List<String> emailsEntered = emails
+    //     .map((controller) => controller.text)
+    //     .toList();
 
     Navigator.pushNamed(context, "/home");
   }
@@ -87,46 +87,47 @@ class _SignupInviteState extends State<SignupInvite> {
       body: Container(
         decoration: BoxDecoration(color: const Color.fromARGB(255, 57, 166, 255)),
         alignment: AlignmentDirectional.center,
-        child: Container(
-          width: MediaQuery.widthOf(context) * 0.85,
-          height: MediaQuery.heightOf(context) * 0.4,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.white,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Flex(
-              direction: Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("Invite family members"),
-
-                emailWidgets.isNotEmpty
-                    ? ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: emailWidgets.length,
-                        itemBuilder: (context, idx) {
-                          return emailWidgets[idx];
-                        },
-                      )
-                    : Text("There are no email sections added"),
-
-                ElevatedButton(
-                  onPressed: addEmailWidget,
-                  child: Text("Add email section"),
-                ),
-
-                SizedBox(
-                  width: MediaQuery.widthOf(context) * 0.8,
-                  child: ElevatedButton(
-                    style: ButtonStyle(),
-                    onPressed: () => sendInvites(),
-                    child: Text("Send invites"),
+        child: SingleChildScrollView(
+          child: Container(
+            width: MediaQuery.widthOf(context) * 0.85,
+            // height: MediaQuery.heightOf(context) * 0.4,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("Invite family members"),
+          
+                  emailWidgets.isNotEmpty
+                      ? ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: emailWidgets.length,
+                          itemBuilder: (context, idx) {
+                            return emailWidgets[idx];
+                          },
+                        )
+                      : Text("There are no email sections added"),
+          
+                  ElevatedButton(
+                    onPressed: addEmailWidget,
+                    child: Text("Add email section"),
                   ),
-                ),
-              ],
+          
+                  SizedBox(
+                    width: MediaQuery.widthOf(context) * 0.8,
+                    child: ElevatedButton(
+                      style: ButtonStyle(),
+                      onPressed: () => sendInvites(),
+                      child: Text("Send invites"),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
