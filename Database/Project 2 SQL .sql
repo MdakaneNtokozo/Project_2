@@ -1,16 +1,18 @@
 CREATE TABLE family_member(
 	family_member_id INT PRIMARY KEY, 
-	family_member_name CHAR(100) NOT NULL,
-	family_member_surname CHAR(100) NOT NULL,
+	family_member_name CHAR(100),
+	family_member_surname CHAR(100),
 	family_member_email CHAR(100) NOT NULL,
-	family_member_password CHAR(100) NOT NULL,
-	family_member_role INT NOT NULL
+	family_member_password CHAR(100),
+	family_member_role INT NOT NULL, 
+    family_group_id CHAR(30) NOT NULL
 );
 
 CREATE TABLE reward(
 	reward_id INT PRIMARY KEY,
 	reward_name CHAR(100) NOT NULL,
-	reward_img CHAR(100)
+    reward_desc CHAR(100) NOT NULL,
+	reward_img CHAR(100) 
 );
 
 CREATE TABLE week(
@@ -41,6 +43,8 @@ CREATE TABLE selected_days(
 CREATE TABLE task(
 	task_id INT PRIMARY KEY,
 	task_name CHAR(100) NOT NULL,
+    task_desc CHAR(150) NOT NULL,
+    task_points INT NOT NULL,
 	week_id INT NOT NULL,
 	selected_days_id INT NOT NULL,
 	FOREIGN KEY (week_id) REFERENCES week(week_id),

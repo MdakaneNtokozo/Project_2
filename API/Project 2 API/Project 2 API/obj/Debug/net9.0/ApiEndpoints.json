@@ -1,1 +1,288 @@
-[]
+[
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "DeleteFamilyMember",
+    "RelativePath": "api/FamilyMembers/deleteFamilyMember",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "member",
+        "Type": "Project_2_API.Models.FamilyMember",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "GetFamilyMemberById",
+    "RelativePath": "api/FamilyMembers/getFamilyMemberById/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "GetFamilyMembers",
+    "RelativePath": "api/FamilyMembers/getFamilyMembers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "Login",
+    "RelativePath": "api/FamilyMembers/login",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "email",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "password",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "SignUp",
+    "RelativePath": "api/FamilyMembers/signup",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "member",
+        "Type": "Project_2_API.Models.FamilyMember",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "UpdateFamilyMember",
+    "RelativePath": "api/FamilyMembers/updateFamilyMember",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "member",
+        "Type": "Project_2_API.Models.FamilyMember",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "CreateWeeklyTasks",
+    "RelativePath": "api/Tasks/createWeeklyTasks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "monday",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "sunday",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "wt",
+        "Type": "Project_2_API.Helper_classes.Weekly_Tasks",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "DeleteWeeklyTasks",
+    "RelativePath": "api/Tasks/deleteWeeklyTasks",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "weekId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "GetWeeklyTasks",
+    "RelativePath": "api/Tasks/getWeeklyTasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "weekId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "UpdateWeeklyTasks",
+    "RelativePath": "api/Tasks/updateWeeklyTasks",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "weekId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "wt",
+        "Type": "Project_2_API.Helper_classes.Weekly_Tasks",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostCompletedTasks",
+    "RelativePath": "api/Temp/PostCompletedTasks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.CompletedTask",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostMembers",
+    "RelativePath": "api/Temp/PostMembers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.FamilyMember",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostRewards",
+    "RelativePath": "api/Temp/PostRewards",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.Reward",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostRewardsWon",
+    "RelativePath": "api/Temp/PostRewardsWon",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.WonReward",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostSelectedDays",
+    "RelativePath": "api/Temp/PostSelectedDays",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.SelectedDay",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostTasks",
+    "RelativePath": "api/Temp/PostTasks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.Task",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TempController",
+    "Method": "PostWeeks",
+    "RelativePath": "api/Temp/PostWeeks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "temp",
+        "Type": "Project_2_API.Models.Week",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

@@ -9,5 +9,5 @@ public partial class CompletedTask
 
     public int FamilyMemberId { get; set; }
 
-    public DateTime TimeCompleted { get; set; }
+    public DateTime TimeCompleted { get; set; }    
 }

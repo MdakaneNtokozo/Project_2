@@ -33,6 +33,7 @@ dependencies:
   table_calendar: ^3.2.0
   weekly_date_picker: ^1.4.2
   calendar_date_picker2: ^2.0.1
+  http: ^1.1.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

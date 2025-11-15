@@ -7,13 +7,15 @@ public partial class FamilyMember
 {
     public int FamilyMemberId { get; set; }
 
-    public string FamilyMemberName { get; set; } = null!;
+    public string? FamilyMemberName { get; set; }
 
-    public string FamilyMemberSurname { get; set; } = null!;
+    public string? FamilyMemberSurname { get; set; }
 
     public string FamilyMemberEmail { get; set; } = null!;
 
-    public string FamilyMemberPassword { get; set; } = null!;
+    public string? FamilyMemberPassword { get; set; }
 
     public int FamilyMemberRole { get; set; }
+
+    public string FamilyGroupId { get; set; } = null!;
 }

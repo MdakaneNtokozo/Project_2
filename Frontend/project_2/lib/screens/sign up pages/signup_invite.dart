@@ -13,7 +13,7 @@ class _SignupInviteState extends State<SignupInvite> {
   List<TextEditingController> emails = [];
   List<String?> permissions = [];
   List<String> permissionOptions = [
-    "Admin permision approved",
+    "Admin permission approved",
     "Admin permission denied",
   ];
 

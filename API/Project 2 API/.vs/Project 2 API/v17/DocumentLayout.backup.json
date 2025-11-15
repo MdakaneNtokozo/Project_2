@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|c:\\users\\ntokozo\\downloads\\project_2\\api\\project 2 api\\project 2 api\\controllers\\tempcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|solutionrelative:project 2 api\\controllers\\tempcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,11 +14,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TempController.cs",
+              "DocumentMoniker": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\TempController.cs",
+              "RelativeDocumentMoniker": "Project 2 API\\Controllers\\TempController.cs",
+              "ToolTip": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\TempController.cs",
+              "RelativeToolTip": "Project 2 API\\Controllers\\TempController.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAmwEEAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-15T07:21:13.487Z",
+              "EditorCaption": ""
             }
           ]
         }

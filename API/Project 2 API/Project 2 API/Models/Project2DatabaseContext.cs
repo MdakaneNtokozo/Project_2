@@ -70,6 +70,10 @@ public partial class Project2DatabaseContext : DbContext
             entity.Property(e => e.FamilyMemberId)
                 .ValueGeneratedNever()
                 .HasColumnName("family_member_id");
+            entity.Property(e => e.FamilyGroupId)
+                .HasMaxLength(30)
+                .IsFixedLength()
+                .HasColumnName("family_group_id");
             entity.Property(e => e.FamilyMemberEmail)
                 .HasMaxLength(100)
                 .IsFixedLength()
@@ -98,6 +102,10 @@ public partial class Project2DatabaseContext : DbContext
             entity.Property(e => e.RewardId)
                 .ValueGeneratedNever()
                 .HasColumnName("reward_id");
+            entity.Property(e => e.RewardDesc)
+                .HasMaxLength(100)
+                .IsFixedLength()
+                .HasColumnName("reward_desc");
             entity.Property(e => e.RewardImg)
                 .HasMaxLength(100)
                 .IsFixedLength()
@@ -154,10 +162,15 @@ public partial class Project2DatabaseContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("task_id");
             entity.Property(e => e.SelectedDaysId).HasColumnName("selected_days_id");
+            entity.Property(e => e.TaskDesc)
+                .HasMaxLength(150)
+                .IsFixedLength()
+                .HasColumnName("task_desc");
             entity.Property(e => e.TaskName)
                 .HasMaxLength(100)
                 .IsFixedLength()
                 .HasColumnName("task_name");
+            entity.Property(e => e.TaskPoints).HasColumnName("task_points");
             entity.Property(e => e.WeekId).HasColumnName("week_id");
 
             

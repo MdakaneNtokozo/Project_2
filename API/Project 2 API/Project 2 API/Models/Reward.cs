@@ -9,5 +9,7 @@ public partial class Reward
 
     public string RewardName { get; set; } = null!;
 
+    public string RewardDesc { get; set; } = null!;
+
     public string? RewardImg { get; set; }
 }
