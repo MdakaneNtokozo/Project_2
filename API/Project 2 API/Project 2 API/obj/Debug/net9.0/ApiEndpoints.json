@@ -8,9 +8,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "member",
-        "Type": "Project_2_API.Models.FamilyMember",
-        "IsRequired": true
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -43,6 +43,22 @@
   },
   {
     "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "InviteMembers",
+    "RelativePath": "api/FamilyMembers/inviteMembers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "member",
+        "Type": "Project_2_API.Models.FamilyMember",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
     "Method": "Login",
     "RelativePath": "api/FamilyMembers/login",
     "HttpMethod": "GET",
@@ -64,9 +80,9 @@
   },
   {
     "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
-    "Method": "SignUp",
-    "RelativePath": "api/FamilyMembers/signup",
-    "HttpMethod": "GET",
+    "Method": "SignUpAsFamilyAdmin",
+    "RelativePath": "api/FamilyMembers/signUpAsFamilyAdmin",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -74,6 +90,32 @@
         "Name": "member",
         "Type": "Project_2_API.Models.FamilyMember",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.FamilyMembersController",
+    "Method": "SignUpInFamilyGroup",
+    "RelativePath": "api/FamilyMembers/signUpInFamilyGroup",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "member",
+        "Type": "Project_2_API.Models.FamilyMember",
+        "IsRequired": true
+      },
+      {
+        "Name": "groupId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "tempPassword",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -102,16 +144,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [
-      {
-        "Name": "monday",
-        "Type": "System.DateTime",
-        "IsRequired": false
-      },
-      {
-        "Name": "sunday",
-        "Type": "System.DateTime",
-        "IsRequired": false
-      },
       {
         "Name": "wt",
         "Type": "Project_2_API.Helper_classes.Weekly_Tasks",
@@ -143,13 +175,7 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "weekId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

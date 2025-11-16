@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/api_calls.dart';
+import 'package:project_2/models/family_member.dart';
 
 class SignupGroupId extends StatefulWidget {
   const SignupGroupId({super.key});
@@ -9,20 +11,30 @@ class SignupGroupId extends StatefulWidget {
 
 class _SignupGroupIdState extends State<SignupGroupId> {
   TextEditingController id = TextEditingController();
-  TextEditingController otp = TextEditingController();
+  TextEditingController tempPassword = TextEditingController();
 
-  void signUpUser(){
-    if(id.text.isNotEmpty || otp.text.isNotEmpty){
-      Navigator.pushNamed(context, "/home");
+  void signUpUser(FamilyMember member) {
+    if (id.text.isNotEmpty || tempPassword.text.isNotEmpty) {
+      var result = ApiCalls().signUpInFamilyGroup(member, id.text, tempPassword.text);
+      result.then(
+        (signUpSuccessful) => {
+          if (signUpSuccessful == true) {Navigator.pushNamed(context, "/home")},
+        },
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final FamilyMember member =
+        ModalRoute.of(context)!.settings.arguments as FamilyMember;
+
     return Scaffold(
       appBar: AppBar(title: Text("Sign up"), centerTitle: true),
       body: Container(
-        decoration: BoxDecoration(color: const Color.fromARGB(255, 57, 166, 255)),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 57, 166, 255),
+        ),
         alignment: AlignmentDirectional.center,
         child: Container(
           width: MediaQuery.widthOf(context) * 0.85,
@@ -58,11 +70,11 @@ class _SignupGroupIdState extends State<SignupGroupId> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("OTP"),
+                    Text("Temp password"),
                     TextField(
-                      controller: otp,
+                      controller: tempPassword,
                       decoration: InputDecoration(
-                        hintText: "Enter your OTP",
+                        hintText: "Enter your temporary password",
                         filled: true,
                         border: InputBorder.none,
                       ),
@@ -74,7 +86,7 @@ class _SignupGroupIdState extends State<SignupGroupId> {
                   width: MediaQuery.widthOf(context) * 0.8,
                   child: ElevatedButton(
                     style: ButtonStyle(),
-                    onPressed: () => signUpUser(),
+                    onPressed: () => signUpUser(member),
                     child: Text("Sign up"),
                   ),
                 ),

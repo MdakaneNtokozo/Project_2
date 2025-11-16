@@ -10,6 +10,14 @@ builder.Services.AddDbContext<Project2DatabaseContext>(option =>
 option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
+builder.Services.AddCors(option =>{
+    option.AddPolicy("AllowFlutterApp", policy =>{
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+        });
+    });
+
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -29,5 +37,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseCors("AllowFlutterApp");
 
 app.Run();

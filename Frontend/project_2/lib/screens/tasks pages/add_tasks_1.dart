@@ -2,6 +2,8 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/models/task.dart';
+import 'package:project_2/tasks_for_the_week.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 class AddTasks1 extends StatefulWidget {
@@ -104,9 +106,6 @@ class _AddTasks1State extends State<AddTasks1> {
                       ),
                       value: taskDaysSelected[count],
                       onValueChanged: (value) {
-                        // setState(() {
-                        //   taskDaysSelected[count - 1] = value;
-                        // });
                         taskDaysSelected[count - 1] = value;
                       },
                     ),
@@ -123,16 +122,52 @@ class _AddTasks1State extends State<AddTasks1> {
       count++;
     });
   }
-  
+
   @override
   void initState() {
     super.initState();
     getDates();
   }
 
+  void createWeeklyTasks() {
+    if (taskNameControllers.length == taskDescControllers.length &&
+        taskDescControllers.length == taskPointsControllers.length &&
+        taskPointsControllers.length == taskDaysSelected.length) {
+
+      List<Task> tasks = [];
+      for (int i = 0; i < taskNameControllers.length; i++) {
+        var taskName = taskNameControllers.elementAt(i).text;
+        var taskDesc = taskDescControllers.elementAt(i).text;
+        var taskPoints = taskPointsControllers.elementAt(i).text;
+
+        var newTask = Task(
+          taskId: -1,
+          taskName: taskName,
+          taskDesc: taskDesc,
+          taskPoints: int.parse(taskPoints),
+          weekId: -1,
+          selectedDaysId: -1,
+        );
+
+        tasks.add(newTask);
+      }
+
+      TasksForTheWeek tasksForTheWeek = TasksForTheWeek(
+        weeks: [],
+        tasks: tasks,
+        dates: taskDaysSelected,
+        selectedDays: [],
+        rewards: [],
+        monday: monday,
+        sunday: sunday
+      );
+
+      Navigator.pushNamed(context, "/addTasks2", arguments: tasksForTheWeek);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(title: Text("Add Task"), centerTitle: true),
       drawer: TasksDrawer(),
@@ -179,10 +214,10 @@ class _AddTasks1State extends State<AddTasks1> {
             Padding(
               padding: const EdgeInsets.fromLTRB(160, 0, 0, 0),
               child: ElevatedButton(
-                onPressed:() {
-                  Navigator.pushNamed(context, "/addTasks2");
+                onPressed: () {
+                  createWeeklyTasks();
                 },
-                child: Text("Next")
+                child: Text("Next"),
               ),
             ),
           ],

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_2_API.Models;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -68,15 +69,13 @@ namespace Project_2_API.Controllers
 
         [HttpDelete]
         [Route("deleteFamilyMember")]
-        public async Task<Object> DeleteFamilyMember(FamilyMember member)
+        public async Task<Object> DeleteFamilyMember(int id)
         {
             var members = await context.FamilyMembers.ToListAsync();
-            var memberFound = members.Find(m => m.FamilyMemberId == member.FamilyMemberId);
+            var memberFound = members.Find(m => m.FamilyMemberId == id);
 
             if (memberFound != null)
             {
-                memberFound = member;
-
                 context.FamilyMembers.Remove(memberFound);
                 await context.SaveChangesAsync();
 
@@ -105,7 +104,7 @@ namespace Project_2_API.Controllers
                 }
                 else
                 {
-                    return BadRequest("Incorrect details hav been entered");
+                    return BadRequest("Incorrect details have been entered");
                 }
             }
             else
@@ -114,33 +113,114 @@ namespace Project_2_API.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("signup")]
-        public async Task<Object> SignUp(FamilyMember member)
+        [HttpPost]
+        [Route("signUpAsFamilyAdmin")]
+        public async Task<Object> SignUpAsFamilyAdmin(FamilyMember member)
+        {
+            var members = await context.FamilyMembers.ToListAsync();
+            var memberFound = members.Find(fm => fm.FamilyMemberEmail == member.FamilyMemberEmail);
+
+            if (memberFound == null)
+            {
+                int lastIdx = 0;
+
+                if (members.Count > 0)
+                {
+                    lastIdx = members.ElementAt(members.Count - 1).FamilyMemberId + 1;
+                }
+
+                member.FamilyMemberId = lastIdx;
+                member.FamilyMemberPassword = pHasher.HashPassword(member.FamilyMemberEmail, member.FamilyMemberPassword);
+
+                //Generate a groupId
+                var longString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var newGroupId = "";
+                var random = new Random();
+
+                for(int i = 0; i < 8; i++){
+                    newGroupId += longString.ElementAt((int) random.NextInt64(longString.Length));
+                }
+                member.FamilyGroupId = newGroupId;
+
+                context.FamilyMembers.Add(member);
+                await context.SaveChangesAsync();
+
+                return Ok(newGroupId);
+            }
+            else
+            {
+                return BadRequest("This email is already in use");
+            }
+        }
+    
+
+        [HttpPost]
+        [Route("signUpInFamilyGroup")]
+        public async Task<Object> SignUpInFamilyGroup(FamilyMember member, String groupId, String tempPassword)
         {
             var members = await context.FamilyMembers.ToListAsync();
             var memberfound = members.Find(m => m.FamilyMemberEmail == member.FamilyMemberEmail);
 
             if (memberfound != null)
             {
-                int lastIdx = 0;
+                if (memberfound.FamilyGroupId == groupId && memberfound.FamilyMemberPassword == tempPassword)
+                {
+                    memberfound.FamilyMemberName = member.FamilyMemberName;
+                    memberfound.FamilyMemberSurname = member.FamilyMemberSurname;
+                    memberfound.FamilyMemberPassword = pHasher.HashPassword(member.FamilyMemberEmail, member.FamilyMemberPassword);
 
+                    context.FamilyMembers.Update(memberfound);
+                    await context.SaveChangesAsync();
+
+                    return Ok("Family member has successfully signed up");
+                }
+                else
+                {
+                    return BadRequest("The group id or temporary password are incorrect");
+                }
+            }
+            else
+            {
+                return BadRequest("This email is has not been invited to any family group");
+            }
+        }
+
+        [HttpPost]
+        [Route("inviteMembers")]
+        public async Task<Object> InviteMembers(FamilyMember member)
+        {
+            var members = await context.FamilyMembers.ToListAsync();
+            var memberfound = members.Find(fm => fm.FamilyMemberEmail == member.FamilyMemberEmail);
+
+            if (memberfound == null)
+            {
+                int lastIdx = 0;
                 if (members.Count > 0)
                 {
-                    lastIdx = members.ElementAt(members.Count - 1).FamilyMemberId;
+                    lastIdx = members.ElementAt(members.Count - 1).FamilyMemberId + 1;
                 }
 
                 member.FamilyMemberId = lastIdx;
-                member.FamilyMemberPassword = pHasher.HashPassword(member.FamilyMemberEmail, member.FamilyMemberPassword);
+
+                //Generate a rabdom password
+                var longString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var randomPassword = "";
+                var random = new Random();
+
+                for (int i = 0; i < 11; i++)
+                {
+                    randomPassword += longString.ElementAt((int)random.NextInt64(longString.Length));
+                }
+                member.FamilyMemberPassword = randomPassword;
 
                 context.FamilyMembers.Add(member);
                 await context.SaveChangesAsync();
 
-                return Ok("Family member has successfully signed up");
+                return Ok("Member has been added");
             }
             else
             {
-                return BadRequest("This email is already in use");
+                return BadRequest("Family member has already been invited");
             }
         }
     }

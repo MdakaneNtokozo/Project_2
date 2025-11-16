@@ -21,47 +21,25 @@ namespace Project_2_API.Controllers
 
         [HttpGet]
         [Route("getWeeklyTasks")]
-        public async Task<Object> GetWeeklyTasks(int weekId)
+        public async Task<Object> GetWeeklyTasks()
         {
             var weeks = await context.Weeks.ToListAsync();
-            var week = weeks.Find(w => w.WeekId == weekId);
+            var tasks = await context.Tasks.ToListAsync();
+            var selectedDays = await context.SelectedDays.ToListAsync();
+            var rewards = await context.Rewards.ToListAsync();
 
-            if (week != null) {
-                var tasks = await context.Tasks.ToListAsync();
-                tasks = tasks.FindAll(t => t.WeekId == week.WeekId);
+            Weekly_Tasks wt = new Weekly_Tasks();
+            wt.weeks = weeks;
+            wt.tasks = tasks;
+            wt.selectedDays = selectedDays;
+            wt.rewards = rewards;
 
-                var selectedDays = await context.SelectedDays.ToListAsync();
-                List<SelectedDay> selectedDaysForTasks = [];
-                tasks.ForEach(t =>
-                {
-                    var sd = selectedDays.Find(sday => sday.SelectedDaysId == t.SelectedDaysId);
-                    if (sd != null)
-                    {
-                        selectedDaysForTasks.Add(sd);
-                    }
-                });
-
-                var rewards = await context.Rewards.ToListAsync();
-                var reward = rewards.Find(r => r.RewardId == week.RewardId);
-
-                var weeklyTasks = new Weekly_Tasks()
-                {
-                    tasks = tasks,
-                    selectedDays = selectedDaysForTasks,
-                    reward = reward
-                };
-
-                return Ok(weeklyTasks);
-            }
-            else
-            {
-                return NotFound("The week with id " + weekId + " does does exist");
-            }
+            return Ok(wt);
         }
 
         [HttpPost]
         [Route("createWeeklyTasks")]
-        public Object CreateWeeklyTasks(DateTime monday, DateTime sunday, Weekly_Tasks wt)
+        public Object CreateWeeklyTasks(Weekly_Tasks wt)
         {
             //create a reward entry
             var rewards = context.Rewards.ToList();
@@ -72,11 +50,11 @@ namespace Project_2_API.Controllers
                 lastIdx = rewards.ElementAt(rewards.Count - 1).RewardId + 1;
             }
 
-            var reward = wt.reward;
+            
             var newReward = new Reward();
-
-            if (reward != null)
+            if (wt.rewards != null)
             {
+                var reward = wt.rewards.ElementAt(0);
                 newReward.RewardId = lastIdx;
                 newReward.RewardName = reward.RewardName;
                 newReward.RewardDesc = reward.RewardDesc;
@@ -94,12 +72,15 @@ namespace Project_2_API.Controllers
             }
 
             //Get the week number and dates from Monday to Sunday
+            DateTime? monday = wt.monday;
+            DateTime? sunday = wt.sunday;
+
             CultureInfo cultrueInfo = CultureInfo.InvariantCulture;
             Calendar calendar = cultrueInfo.Calendar;
-            var weekNo = calendar.GetWeekOfYear(monday, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
+            var weekNo = calendar.GetWeekOfYear((DateTime)monday, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
 
             List<DateTime> days = [];
-            for (DateTime date = monday; date <= sunday; date = date.AddDays(1))
+            for (DateTime date = (DateTime)monday; date <= sunday; date = date.AddDays(1))
             {
                 days.Add(date);
             }
@@ -257,11 +238,14 @@ namespace Project_2_API.Controllers
                 
                 //Check if rewards need to be updated
                 var rewards = context.Rewards.ToList();
-                var rewardToBeUpdated = wt.reward;
+                var rewardsToBeUpdated = wt.rewards;
 
-                if(rewardToBeUpdated != null)
+                if(rewardsToBeUpdated != null)
                 {
-                    UpdateReward(rewards, rewardToBeUpdated);
+                    rewardsToBeUpdated.ForEach(r =>
+                    {
+                        UpdateReward(rewards, r);
+                    });
                 }
 
                 return Ok("Weekly tasks have been updated");

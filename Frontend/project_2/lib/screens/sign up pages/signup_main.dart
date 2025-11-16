@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/api_calls.dart';
+import 'package:project_2/models/family_member.dart';
 
 class SignupMain extends StatefulWidget {
   const SignupMain({super.key});
@@ -22,10 +24,25 @@ class _SignupMainState extends State<SignupMain> {
         name.text.isNotEmpty ||
         surname.text.isNotEmpty ||
         selectedItem != null) {
-      if(selectedItem == items[0]){
-        Navigator.pushNamed(context, "/signupGroupId");
-      }else if(selectedItem == items[1]){
-        Navigator.pushNamed(context, "/signupInvite");
+      //Creating a new family member entry
+      var member = FamilyMember(
+        familyMemberId: -1,
+        familyMemberName: name.text,
+        familyMemberSurname: surname.text,
+        familyMemberEmail: email.text,
+        familyMemberPassword: password.text,
+        familyMemberRole: -1,
+        familyGroupId: "",
+      );
+
+      if (selectedItem == items[0]) {
+        //Join household group is selected
+        member.familyMemberRole = 0;
+        Navigator.pushNamed(context, "/signupGroupId", arguments: member);
+      } else if (selectedItem == items[1]) {
+        //Admin of household is selected
+        member.familyMemberRole = 1;
+        Navigator.pushNamed(context, "/signupInvite", arguments: member);
       }
     }
   }
@@ -35,7 +52,9 @@ class _SignupMainState extends State<SignupMain> {
     return Scaffold(
       appBar: AppBar(title: Text("Sign up"), centerTitle: true),
       body: Container(
-        decoration: BoxDecoration(color: const Color.fromARGB(255, 57, 166, 255)),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 57, 166, 255),
+        ),
         alignment: AlignmentDirectional.center,
         child: Container(
           width: MediaQuery.widthOf(context) * 0.85,
@@ -66,7 +85,7 @@ class _SignupMainState extends State<SignupMain> {
                       ),
                     ],
                   ),
-              
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -81,7 +100,7 @@ class _SignupMainState extends State<SignupMain> {
                       ),
                     ],
                   ),
-              
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -96,7 +115,7 @@ class _SignupMainState extends State<SignupMain> {
                       ),
                     ],
                   ),
-              
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -111,24 +130,24 @@ class _SignupMainState extends State<SignupMain> {
                       ),
                     ],
                   ),
-                  
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text("Select an option below"),
-              
+
                       DropdownButtonFormField<String>(
-                        items: items.map((String item){
+                        items: items.map((String item) {
                           return DropdownMenuItem(
                             value: item,
                             child: Text(item),
                           );
-                        }).toList(), 
-                        onChanged: (String? newSelected){
+                        }).toList(),
+                        onChanged: (String? newSelected) {
                           selectedItem = newSelected;
                         },
-                        validator: (value){
-                          if(value == null){
+                        validator: (value) {
+                          if (value == null) {
                             return "Please select an option";
                           }
                           return null;
@@ -136,7 +155,7 @@ class _SignupMainState extends State<SignupMain> {
                       ),
                     ],
                   ),
-              
+
                   SizedBox(
                     width: MediaQuery.widthOf(context) * 0.8,
                     child: ElevatedButton(

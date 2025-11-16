@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/api_calls.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,16 +14,24 @@ class _LoginState extends State<Login> {
     TextEditingController email = TextEditingController();
     TextEditingController password = TextEditingController();
 
-    logUserIn() {
+    logUserIn(){
       if (email.text.isNotEmpty || password.text.isNotEmpty) {
-        Navigator.pushNamed(context, "/signupmain");
+        var result = ApiCalls().login(email.text, password.text);
+        result.then((loginSuccessful) =>{
+          if(loginSuccessful == true){
+            //Navigator.pushNamed(context, "/home")
+            Navigator.pushNamed(context, "/signupmain")
+          }
+        });
       }
     }
 
     return Scaffold(
       appBar: AppBar(title: Text("Login"), centerTitle: true),
       body: Container(
-        decoration: BoxDecoration(color: const Color.fromARGB(255, 57, 166, 255)),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 57, 166, 255),
+        ),
         alignment: AlignmentDirectional.center,
         child: Container(
           width: MediaQuery.widthOf(context) * 0.85,

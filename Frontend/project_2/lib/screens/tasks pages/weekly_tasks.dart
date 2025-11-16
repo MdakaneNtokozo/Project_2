@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
 import 'package:project_2/screens/tasks%20pages/view_weekly_tasks.dart';
+import 'package:project_2/tasks_for_the_week.dart';
 
 class WeeklyTasks extends StatefulWidget {
   const WeeklyTasks({super.key});
+
+  get tasks => null;
 
   @override
   State<WeeklyTasks> createState() => _WeeklyTasksState();
 }
 
 class _WeeklyTasksState extends State<WeeklyTasks> {
-  List tasks = ["task 1", "task 2"];
+  late TasksForTheWeek weeklyTasks;
+
+  @override
+  void initState() {
+    super.initState();
+    var result = ApiCalls().getWeeklyTasks();
+    result.then((wt) =>{
+      weeklyTasks = wt
+    });
+  }
 
   void filterTasks() {
     showDialog(
@@ -48,11 +61,16 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
             SingleChildScrollView(
               child: Column(
                 children: [
-                  tasks.isNotEmpty
+                  weeklyTasks.weeks != null
                       ? ListView.builder(
                         shrinkWrap: true,
-                          itemCount: tasks.length,
+                          itemCount: weeklyTasks.weeks?.length,
                           itemBuilder: (context, idx) {
+                            var week = weeklyTasks.weeks?.elementAt(idx);
+                            var tasks = weeklyTasks.tasks;
+                            tasks!.retainWhere((task) => task.weekId == week!.weekId);
+                            var reward = weeklyTasks.rewards?.firstWhere((r) => r.rewardId == week!.rewardId);
+                            
                             return GestureDetector(
                               child: Card(
                                 child: Padding(
@@ -60,10 +78,10 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text("Week no."),
-                                      Text("... tasks"),
+                                      Text("Week ${week!.weekNo}"),
+                                      Text("${tasks.length} tasks"),
                                       Text("... total points"),
-                                      Text("Reward: ..."),
+                                      Text("Reward: ${reward!.rewardName}"),
                                     ],
                                   ),
                                 ),
@@ -73,7 +91,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                 Navigator.push(
                                   context, 
                                   MaterialPageRoute(
-                                    builder:(context) => ViewWeeklyTasks(tasks: tasks))
+                                    builder:(context) => ViewWeeklyTasks(week: week, tasks: tasks, reward: reward))
                                 );
                               },
                             );

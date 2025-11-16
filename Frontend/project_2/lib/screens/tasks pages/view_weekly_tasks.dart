@@ -2,10 +2,20 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/models/reward.dart';
+import 'package:project_2/models/task.dart';
+import 'package:project_2/models/week.dart';
 
 class ViewWeeklyTasks extends StatefulWidget {
-  final List tasks;
-  const ViewWeeklyTasks({super.key, required this.tasks});
+  final List<Task> tasks;
+  final Week week;
+  final Reward reward;
+  const ViewWeeklyTasks({
+    super.key,
+    required this.tasks,
+    required this.week,
+    required this.reward,
+  });
 
   @override
   State<ViewWeeklyTasks> createState() => _ViewWeeklyTasksState();
@@ -19,7 +29,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
     super.initState();
   }
 
-  Widget getTaskWidget(int idx) {
+  Widget getTaskWidget(Task task) {
     return Card(
       child: Container(
         color: Colors.grey,
@@ -32,6 +42,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
               decoration: InputDecoration(
                 filled: true,
                 border: InputBorder.none,
+                hintText: task.taskName,
               ),
             ),
 
@@ -40,6 +51,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
               decoration: InputDecoration(
                 filled: true,
                 border: InputBorder.none,
+                hintText: task.taskDesc,
               ),
             ),
 
@@ -48,6 +60,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
               decoration: InputDecoration(
                 filled: true,
                 border: InputBorder.none,
+                hintText: task.taskPoints.toString(),
               ),
             ),
 
@@ -94,7 +107,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
             Column(
               children: [
                 Text(
-                  "Week ...",
+                  "Week ${widget.week.weekNo}",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
 
@@ -104,11 +117,35 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
                         child: ListView.builder(
                           itemCount: widget.tasks.length,
                           itemBuilder: (context, idx) {
-                            return getTaskWidget(idx);
+                            var task = widget.tasks.elementAt(idx);
+                            return getTaskWidget(task);
                           },
                         ),
                       )
                     : Text("There are no task sections added"),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Reward name"),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: widget.reward.rewardName,
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                    ),
+
+                    Text("Description"),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: widget.reward.rewardDesc,
+                        filled: true,
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
 
