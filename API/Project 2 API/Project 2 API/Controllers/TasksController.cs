@@ -28,18 +28,23 @@ namespace Project_2_API.Controllers
             var selectedDays = await context.SelectedDays.ToListAsync();
             var rewards = await context.Rewards.ToListAsync();
 
-            Weekly_Tasks wt = new Weekly_Tasks();
-            wt.weeks = weeks;
-            wt.tasks = tasks;
-            wt.selectedDays = selectedDays;
-            wt.rewards = rewards;
+            WeeklyTasks wt = new()
+            {
+                weeks = weeks,
+                tasks = tasks,
+                dates = null,
+                selectedDays = selectedDays,
+                rewards = rewards,
+                monday = null,
+                sunday = null
+            };
 
             return Ok(wt);
         }
 
         [HttpPost]
         [Route("createWeeklyTasks")]
-        public Object CreateWeeklyTasks(Weekly_Tasks wt)
+        public Object CreateWeeklyTasks(WeeklyTasks wt)
         {
             //create a reward entry
             var rewards = context.Rewards.ToList();
@@ -80,13 +85,15 @@ namespace Project_2_API.Controllers
             var weekNo = calendar.GetWeekOfYear((DateTime)monday, CalendarWeekRule.FirstDay, DayOfWeek.Monday);
 
             List<DateTime> days = [];
-            for (DateTime date = (DateTime)monday; date <= sunday; date = date.AddDays(1))
+            for (DateTime date = (DateTime)monday; date <= sunday?.AddDays(1) ; date = date.AddDays(1))
             {
-                days.Add(date);
+                var newDate = new DateTime(date.Year, date.Month, date.Day);
+                days.Add(newDate);
             }
 
             Week week = new()
             {
+                WeekId = lastIdx,
                 WeekNo = weekNo,
                 Monday = days[0],
                 Tuesday = days[1],
@@ -103,21 +110,17 @@ namespace Project_2_API.Controllers
 
             //create the tasks and their selected dates
             if (wt.tasks != null && wt.dates != null)
-            {
-                List<Task> tasksSelected = wt.tasks;
-                List<List<DateTime>> daysSelected = wt.dates;
-
-                if (tasksSelected != null && daysSelected != null)
+            {                
+                for (int i = 0; i < wt.tasks.Count; i++)
                 {
-                    for (int i = 0; i < tasksSelected.Count; i++)
-                    {
-                        //Create the selected dates first
-                        int selectedDaysId = CreateSelectedDays(daysSelected.ElementAt(i));
+                    //Create the selected dates first
+                    var dates = wt.dates.ElementAt(i);
+                    int selectedDaysId = CreateSelectedDays(dates, week);
 
-                        //Create the tasks 
-                        CreateNewTask(tasksSelected.ElementAt(i), week.WeekId, selectedDaysId);
-                    }
+                    //Create the tasks 
+                    CreateNewTask(wt.tasks.ElementAt(i), week.WeekId, selectedDaysId);
                 }
+                
             }
 
             return Ok("Weekly tasks have been added");
@@ -145,25 +148,51 @@ namespace Project_2_API.Controllers
             context.SaveChanges();
         }
 
-        private int CreateSelectedDays(List<DateTime> selectedDaysForTask)
+        private int CreateSelectedDays(List<DateTime> selectedDaysForTask, Week week)
         {
             var selectedDays = context.SelectedDays.ToList();
             int lastIdx = 0;
 
             if (selectedDays.Count > 0)
             {
-                lastIdx = selectedDays.ElementAt(selectedDays.Count - 1).SelectedDaysId;
+                lastIdx = selectedDays.ElementAt(selectedDays.Count - 1).SelectedDaysId + 1;
             }
 
             var newSelectedDays = new SelectedDay();
             newSelectedDays.SelectedDaysId = lastIdx;
-            newSelectedDays.Monday = selectedDaysForTask.ElementAt(0);
-            newSelectedDays.Tuesday = selectedDaysForTask.ElementAt(1);
-            newSelectedDays.Wednesday = selectedDaysForTask.ElementAt(2);
-            newSelectedDays.Thursday = selectedDaysForTask.ElementAt(3);
-            newSelectedDays.Friday = selectedDaysForTask.ElementAt(4);
-            newSelectedDays.Saturday = selectedDaysForTask.ElementAt(5);
-            newSelectedDays.Sunday = selectedDaysForTask.ElementAt(6);
+
+            for(int i = 0; i < selectedDaysForTask.Count; i++) {
+                var day = selectedDaysForTask.ElementAt(i);
+
+                if(day == week.Monday)
+                {
+                    newSelectedDays.Monday = week.Monday;
+                }
+                else if (day == week.Tuesday)
+                {
+                    newSelectedDays.Tuesday = week.Tuesday;
+                }
+                else if (day == week.Wednesday)
+                {
+                    newSelectedDays.Wednesday = week.Wednesday;
+                }
+                else if (day == week.Thursday)
+                {
+                    newSelectedDays.Thursday = week.Thursday;
+                }
+                else if (day == week.Friday)
+                {
+                    newSelectedDays.Friday = week.Friday;
+                }
+                else if (day == week.Saturday)
+                {
+                    newSelectedDays.Saturday = week.Saturday;
+                }
+                else if (day == week.Sunday)
+                {
+                    newSelectedDays.Sunday = week.Sunday;
+                }
+            }
 
             context.SelectedDays.Add(newSelectedDays);
             context.SaveChanges();
@@ -173,14 +202,13 @@ namespace Project_2_API.Controllers
 
         [HttpPut]
         [Route("updateWeeklyTasks")]
-        public Object UpdateWeeklyTasks(int weekId, Weekly_Tasks wt)
+        public Object UpdateWeeklyTasks(WeeklyTasks wt)
         {
-            //Get the tasks for the following week id
-            var weeks = context.Weeks.ToList();
-            var week = weeks.Find(w => w.WeekId == weekId);
-
-            if (week != null)
+            //Get the tasks for the following wee
+            if (wt.weeks != null)
             {
+                var week = wt.weeks.ElementAt(0);
+
                 //Check if tasks need to be updated
                 var tasks = context.Tasks.ToList();
                 tasks = tasks.FindAll(t => t.WeekId == week.WeekId);
@@ -208,7 +236,7 @@ namespace Project_2_API.Controllers
                             {
                                 //Create a new entry for the selected days and task
                                 var selectedDaysForTask = wt.dates.ElementAt(currentIdx);
-                                int selectedDaysId = CreateSelectedDays(selectedDaysForTask);
+                                int selectedDaysId = CreateSelectedDays(selectedDaysForTask, week);
 
                                 CreateNewTask(t, week.WeekId, selectedDaysId);
                             }
@@ -252,34 +280,35 @@ namespace Project_2_API.Controllers
             }
             else
             {
-                return NotFound("The week with id " + weekId + " does does exist");
+                return NotFound("The week being sent to be updated does not exist");
             }
         }
 
-        private void UpdateTask(Task updateTask, Task t, Weekly_Tasks wt, int currentIdx)
+        private void UpdateTask(Task updateTask, Task t, WeeklyTasks wt, int currentIdx)
         {
             updateTask.TaskName = t.TaskName;
             updateTask.TaskDesc = t.TaskDesc;
             updateTask.TaskPoints = t.TaskPoints;
-
+            
             context.Tasks.Update(updateTask);
             context.SaveChanges();
 
             //Update the selected days
-            if (wt.dates != null)
+            if (wt.selectedDays != null)
             {
-                var selectedDaysToUpdate = context.SelectedDays.ToList().Find(sd => sd.SelectedDaysId == updateTask.SelectedDaysId);
-                var selectedDays = wt.dates.ElementAt(currentIdx);
+                var selectedDays = wt.selectedDays.Find((s) => s.SelectedDaysId == t.SelectedDaysId);
+                var allSelectedDays = context.SelectedDays.ToList();
+                var selectedDaysToUpdate = allSelectedDays.Find((s) => s.SelectedDaysId == selectedDays.SelectedDaysId);
 
                 if (selectedDaysToUpdate != null)
                 {
-                    selectedDaysToUpdate.Monday = selectedDays.ElementAt(0);
-                    selectedDaysToUpdate.Tuesday = selectedDays.ElementAt(1);
-                    selectedDaysToUpdate.Wednesday = selectedDays.ElementAt(2);
-                    selectedDaysToUpdate.Thursday = selectedDays.ElementAt(3);
-                    selectedDaysToUpdate.Friday = selectedDays.ElementAt(4);
-                    selectedDaysToUpdate.Saturday = selectedDays.ElementAt(5);
-                    selectedDaysToUpdate.Sunday = selectedDays.ElementAt(6);
+                    selectedDaysToUpdate.Monday = selectedDays.Monday;
+                    selectedDaysToUpdate.Tuesday = selectedDays.Tuesday;
+                    selectedDaysToUpdate.Wednesday = selectedDays.Wednesday;
+                    selectedDaysToUpdate.Thursday = selectedDays.Thursday;
+                    selectedDaysToUpdate.Friday = selectedDays.Friday;
+                    selectedDaysToUpdate.Saturday = selectedDays.Saturday;
+                    selectedDaysToUpdate.Sunday = selectedDays.Sunday;
 
                     context.SelectedDays.Update(selectedDaysToUpdate);
                     context.SaveChanges();

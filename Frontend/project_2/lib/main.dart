@@ -7,6 +7,7 @@ import 'package:project_2/screens/sign%20up%20pages/signup_main.dart';
 import 'package:project_2/screens/tasks%20pages/add_tasks_1.dart';
 import 'package:project_2/screens/tasks%20pages/add_tasks_2.dart';
 import 'package:project_2/screens/tasks%20pages/tasks_main.dart';
+import 'package:project_2/screens/tasks%20pages/view_weekly_tasks.dart';
 import 'package:project_2/screens/tasks%20pages/weekly_tasks.dart';
 
 void main() {
@@ -23,6 +24,7 @@ void main() {
         "/addTasks1": (context) => AddTasks1(),
         "/addTasks2": (context) => AddTasks2(),
         "/weeklyTasks": (context) => WeeklyTasks(),
+        "/viewWeeklyTasks": (context) => ViewWeeklyTasks()
       },
       debugShowCheckedModeBanner: false,
     )

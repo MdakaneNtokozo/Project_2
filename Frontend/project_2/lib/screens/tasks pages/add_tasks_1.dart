@@ -132,7 +132,8 @@ class _AddTasks1State extends State<AddTasks1> {
   void createWeeklyTasks() {
     if (taskNameControllers.length == taskDescControllers.length &&
         taskDescControllers.length == taskPointsControllers.length &&
-        taskPointsControllers.length == taskDaysSelected.length) {
+        taskPointsControllers.length == taskDaysSelected.length &&
+        taskNameControllers.isNotEmpty) {
 
       List<Task> tasks = [];
       for (int i = 0; i < taskNameControllers.length; i++) {
@@ -153,11 +154,11 @@ class _AddTasks1State extends State<AddTasks1> {
       }
 
       TasksForTheWeek tasksForTheWeek = TasksForTheWeek(
-        weeks: [],
+        weeks: null,
         tasks: tasks,
         dates: taskDaysSelected,
-        selectedDays: [],
-        rewards: [],
+        selectedDays: null,
+        rewards: null,
         monday: monday,
         sunday: sunday
       );

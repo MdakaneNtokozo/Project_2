@@ -19,8 +19,7 @@ class _LoginState extends State<Login> {
         var result = ApiCalls().login(email.text, password.text);
         result.then((loginSuccessful) =>{
           if(loginSuccessful == true){
-            //Navigator.pushNamed(context, "/home")
-            Navigator.pushNamed(context, "/signupmain")
+            Navigator.pushNamed(context, "/home")
           }
         });
       }

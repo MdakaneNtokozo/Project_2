@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/models/selected_days.dart';
+import 'package:project_2/models/task.dart';
 import 'package:project_2/screens/tasks%20pages/view_weekly_tasks.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 
@@ -15,14 +17,16 @@ class WeeklyTasks extends StatefulWidget {
 }
 
 class _WeeklyTasksState extends State<WeeklyTasks> {
-  late TasksForTheWeek weeklyTasks;
+  TasksForTheWeek weeklyTasks = TasksForTheWeek();
 
   @override
   void initState() {
     super.initState();
     var result = ApiCalls().getWeeklyTasks();
     result.then((wt) =>{
-      weeklyTasks = wt
+      setState(() {
+        weeklyTasks = wt;
+      })
     });
   }
 
@@ -41,6 +45,15 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
         );
       },
     );
+  }
+
+  getTotalPoints(List<Task> tasks) {
+    int total = 0;
+    for(int i = 0; i < tasks.length; i++){
+      total += tasks.elementAt(i).taskPoints;
+    }
+
+    return total;
   }
 
   @override
@@ -67,10 +80,23 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                           itemCount: weeklyTasks.weeks?.length,
                           itemBuilder: (context, idx) {
                             var week = weeklyTasks.weeks?.elementAt(idx);
+
                             var tasks = weeklyTasks.tasks;
                             tasks!.retainWhere((task) => task.weekId == week!.weekId);
+
                             var reward = weeklyTasks.rewards?.firstWhere((r) => r.rewardId == week!.rewardId);
                             
+                            var totalPoints = getTotalPoints(tasks);
+
+                            var allSelectedDays = weeklyTasks.selectedDays;
+                            List<SelectedDays> selectedDays = [];
+                            tasks.forEach((t){
+                              var sd = allSelectedDays?.firstWhere((d) => d.selectedDaysId == t.selectedDaysId);
+                              if(sd != null){
+                                selectedDays.add(sd);
+                              }
+                            });
+
                             return GestureDetector(
                               child: Card(
                                 child: Padding(
@@ -80,7 +106,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                                     children: [
                                       Text("Week ${week!.weekNo}"),
                                       Text("${tasks.length} tasks"),
-                                      Text("... total points"),
+                                      Text("$totalPoints total points"),
                                       Text("Reward: ${reward!.rewardName}"),
                                     ],
                                   ),
@@ -88,11 +114,13 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
                               ),
                               onTap: () {
                                 //Navigate to the view weekly task
-                                Navigator.push(
-                                  context, 
-                                  MaterialPageRoute(
-                                    builder:(context) => ViewWeeklyTasks(week: week, tasks: tasks, reward: reward))
-                                );
+                                TasksForTheWeek wt = TasksForTheWeek();
+                                wt.weeks = [week];
+                                wt.tasks =  tasks;
+                                wt.rewards = [reward];
+                                wt.selectedDays = selectedDays; 
+
+                                Navigator.pushNamed(context, "/viewWeeklyTasks", arguments: wt);
                               },
                             );
                           },
@@ -107,4 +135,5 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
       bottomNavigationBar: BottomNavBar(),
     );
   }
+
 }

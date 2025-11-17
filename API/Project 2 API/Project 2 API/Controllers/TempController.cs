@@ -35,6 +35,9 @@ namespace Project_2_API.Controllers
         [Route("PostRewards")]
         public Object PostRewards(Reward temp)
         {
+            context.Rewards.Add(temp);
+            context.SaveChanges();
+
             return Ok();
         }
 
@@ -42,6 +45,8 @@ namespace Project_2_API.Controllers
         [Route("PostSelectedDays")]
         public Object PostSelectedDays(SelectedDay temp)
         {
+            context.SelectedDays.Add(temp);
+            context.SaveChanges();
             return Ok();
         }
 
@@ -49,6 +54,8 @@ namespace Project_2_API.Controllers
         [Route("PostTasks")]
         public Object PostTasks(Task temp)
         {
+            context.Tasks.Add(temp);
+            context.SaveChanges();
             return Ok();
         }
 
@@ -56,6 +63,8 @@ namespace Project_2_API.Controllers
         [Route("PostWeeks")]
         public Object PostWeeks(Week temp)
         {
+            context.Weeks.Add(temp);
+            context.SaveChanges();
             return Ok();
         }
 

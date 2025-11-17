@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/models/completed_tasks.dart';
 import 'package:project_2/models/task.dart';
+import 'package:project_2/tasks_for_the_week.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,8 +13,22 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Task> tasks = [];
+  TasksForTheWeek weeklyTasks = TasksForTheWeek();
   List<CompletedTask> completedTasks = [];
+  DateTime now = DateTime.now();
+  late DateTime today = DateTime(now.year, now.month, now.day);
+
+  @override
+  void initState() {
+    super.initState();
+
+    var result = ApiCalls().getWeeklyTasks();
+    result.then((wt) {
+      setState(() {
+        weeklyTasks = wt;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +53,18 @@ class _HomeState extends State<Home> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
 
-            tasks.isNotEmpty
+            weeklyTasks.tasks != null
                 ? ListView.builder(
                     shrinkWrap: true,
-                    itemCount: tasks.length,
+                    itemCount: weeklyTasks.tasks!.length,
                     itemBuilder: (context, idx) {
-                      Task task = tasks.elementAt(idx);
+                      Task task = weeklyTasks.tasks!.elementAt(idx);
+
+                      var selectedDays = weeklyTasks.selectedDays;
+                      var sd = selectedDays!.firstWhere(
+                        (s) => s.selectedDaysId == task.selectedDaysId,
+                      );
+
                       bool isTaskCompleted = completedTasks.any(
                         (ct) => ct.taskId == task.taskId,
                       );
@@ -51,35 +73,46 @@ class _HomeState extends State<Home> {
                         orElse: () => CompletedTask(
                           taskId: -1,
                           familyMemberId: -1,
-                          timeCompleted: DateTime.now(), //emty completed task variable
+                          timeCompleted:
+                              DateTime.now(), //emty completed task variable
                         ),
                       );
 
-                      return Card(
-                        child: Container(
-                          color: const Color.fromARGB(255, 238, 238, 238),
-                          height: 100,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(task.taskName),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(task.taskDesc),
-                                  Checkbox(
-                                    value: isTaskCompleted == true
-                                        ? true
-                                        : false,
-                                    onChanged: (value) {},
-                                  ),
-                                ],
-                              ),
-                            ],
+                      if (sd.monday == today ||
+                          sd.tuesday == today ||
+                          sd.wednesday == today ||
+                          sd.thursday == today ||
+                          sd.friday == today ||
+                          sd.saturday == today ||
+                          sd.sunday == today) {
+                        return Card(
+                          child: Container(
+                            color: const Color.fromARGB(255, 238, 238, 238),
+                            height: 100,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(task.taskName),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(task.taskDesc),
+                                    Checkbox(
+                                      value: isTaskCompleted == true
+                                          ? true
+                                          : false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        return Text("There are no tasks added for today");
+                      }
                     },
                   )
                 : Text("There are no tasks added for today"),

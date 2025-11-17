@@ -146,7 +146,7 @@
     "Parameters": [
       {
         "Name": "wt",
-        "Type": "Project_2_API.Helper_classes.Weekly_Tasks",
+        "Type": "Project_2_API.Helper_classes.WeeklyTasks",
         "IsRequired": true
       }
     ],
@@ -187,13 +187,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "weekId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "wt",
-        "Type": "Project_2_API.Helper_classes.Weekly_Tasks",
+        "Type": "Project_2_API.Helper_classes.WeeklyTasks",
         "IsRequired": true
       }
     ],

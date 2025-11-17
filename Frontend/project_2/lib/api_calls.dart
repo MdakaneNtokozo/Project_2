@@ -3,11 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project_2/models/family_member.dart';
+import 'package:project_2/models/task.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 
 class ApiCalls {
   //var api = "http://localhost:5063/api";
-  var api = "http://10.220.36.84:45458/api";
+  var api = "http://10.220.36.84:45455/api";
 
   Future<bool> login(String email, String password) async {
     Uri uri = Uri.parse(
@@ -99,15 +100,15 @@ class ApiCalls {
 
   Future<bool> createWeeklyTasks(TasksForTheWeek tasksForTheWeek) async {
     var complete = false;
-    Uri uri = Uri.parse("$api/Tasks/createWeeklyTasks");
-    var data = TasksForTheWeek.toJson(tasksForTheWeek);
-    print(data);
-    print(jsonEncode(TasksForTheWeek.toJson(tasksForTheWeek)));
 
+    var data = tasksForTheWeekToJson(tasksForTheWeek);
+    print(data);
+
+    Uri uri = Uri.parse("$api/Tasks/createWeeklyTasks");
     var response = await http.post(
       uri,
       headers: {"Content-Type": "application/json"},
-      body:  jsonEncode(TasksForTheWeek.toJson(tasksForTheWeek))
+      body: tasksForTheWeekToJson(tasksForTheWeek),
     );
 
     if (response.statusCode == 200) {
@@ -123,9 +124,25 @@ class ApiCalls {
 
     late TasksForTheWeek weeklyTasks;
     if (response.statusCode == 200) {
-      weeklyTasks = jsonDecode(response.body);
+      weeklyTasks = tasksForTheWeekFromJson(response.body);
     }
 
     return weeklyTasks;
+  }
+
+  Future<bool> updateWeeklyTasks(TasksForTheWeek weeklyTasks) async {
+    Uri uri = Uri.parse("$api/Tasks/updateWeeklyTasks");
+    var response = await http.put(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: tasksForTheWeekToJson(weeklyTasks)
+    );
+    bool updated = false;
+
+    if (response.statusCode == 200) {
+      updated = true;
+    }
+
+    return updated;
   }
 }

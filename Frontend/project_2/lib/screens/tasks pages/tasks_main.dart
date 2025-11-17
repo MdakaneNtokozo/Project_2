@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
 import 'package:project_2/models/completed_tasks.dart';
-import 'package:project_2/models/task.dart';
+import 'package:project_2/tasks_for_the_week.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TasksMain extends StatefulWidget {
@@ -13,10 +14,23 @@ class TasksMain extends StatefulWidget {
 }
 
 class _TasksMainState extends State<TasksMain> {
-  List<Task> tasks = [];
+  TasksForTheWeek weeklyTasks = TasksForTheWeek();
   List<CompletedTask> completedTasks = [];
-  DateTime selectedDay = DateTime.now();
-  DateTime selectedFocusedDay = DateTime.now();
+  DateTime today = DateTime.now();
+  late DateTime daySelected = DateTime(today.year, today.month, today.day);
+  late DateTime dayFocused = DateTime(today.year, today.month, today.day);
+
+  @override
+  void initState() {
+    super.initState();
+
+    var result = ApiCalls().getWeeklyTasks();
+    result.then((wt) {
+      setState(() {
+        weeklyTasks = wt;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,31 +43,35 @@ class _TasksMainState extends State<TasksMain> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TableCalendar(
-              focusedDay: selectedFocusedDay,
+              focusedDay: dayFocused,
               firstDay: DateTime.utc(2010, 10, 16),
               lastDay: DateTime.utc(2030, 3, 14),
               selectedDayPredicate: (day) {
-                return isSameDay(selectedDay, day);
+                return isSameDay(daySelected, day);
               },
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
-                  selectedDay = selectedDay;
-                  selectedFocusedDay = focusedDay;
+                  daySelected = selectedDay;
+                  dayFocused = DateTime.parse(focusedDay.toIso8601String().substring(0, focusedDay.toIso8601String().length - 1));
                 });
               },
               calendarFormat: CalendarFormat.week,
               startingDayOfWeek: StartingDayOfWeek.monday,
-              calendarStyle: CalendarStyle(
-                
-              ),
+              calendarStyle: CalendarStyle(),
             ),
 
-            tasks.isNotEmpty
+            weeklyTasks.tasks != null
                 ? ListView.builder(
-                  shrinkWrap: true,
-                    itemCount: tasks.length,
+                    shrinkWrap: true,
+                    itemCount: weeklyTasks.tasks!.length,
                     itemBuilder: (context, idx) {
-                      var task = tasks.elementAt(idx);
+                      var task = weeklyTasks.tasks!.elementAt(idx);
+
+                      var selectedDays = weeklyTasks.selectedDays;
+                      var sd = selectedDays!.firstWhere(
+                        (s) => s.selectedDaysId == task.selectedDaysId,
+                      );
+
                       bool isTaskCompleted = completedTasks.any(
                         (ct) => ct.taskId == task.taskId,
                       );
@@ -62,33 +80,46 @@ class _TasksMainState extends State<TasksMain> {
                         orElse: () => CompletedTask(
                           taskId: -1,
                           familyMemberId: -1,
-                          timeCompleted: DateTime.now(), //emty completed task variable
+                          timeCompleted:
+                              DateTime.now(), //emty completed task variable
                         ),
                       );
 
-                      return Card(
-                        child: Container(
-                          color: const Color.fromARGB(255, 238, 238, 238),
-                          height: 100,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(task.taskName),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(task.taskDesc),
-                                  Checkbox(
-                                    value: isTaskCompleted == true ? true: false,
-                                    onChanged: (value) {
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
+                      if (sd.monday == dayFocused ||
+                          sd.tuesday == dayFocused ||
+                          sd.wednesday == dayFocused ||
+                          sd.thursday == dayFocused ||
+                          sd.friday == dayFocused ||
+                          sd.saturday == dayFocused ||
+                          sd.sunday == dayFocused) {
+                        return Card(
+                          child: Container(
+                            color: const Color.fromARGB(255, 238, 238, 238),
+                            height: 100,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(task.taskName),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(task.taskDesc),
+                                    Checkbox(
+                                      value: isTaskCompleted == true
+                                          ? true
+                                          : false,
+                                      onChanged: (value) {},
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      }else{
+                        return Text("There are no tasks added for today");
+                      }
                     },
                   )
                 : Text("There are no tasks added for today"),
