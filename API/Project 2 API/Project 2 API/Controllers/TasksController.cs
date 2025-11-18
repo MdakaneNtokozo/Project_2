@@ -133,7 +133,7 @@ namespace Project_2_API.Controllers
 
             if (tasks.Count > 0)
             {
-                lastIdx = tasks.ElementAt(tasks.Count - 1).TaskId;
+                lastIdx = tasks.ElementAt(tasks.Count - 1).TaskId + 1;
             }
 
             var newTask = new Task();
@@ -212,17 +212,18 @@ namespace Project_2_API.Controllers
                 //Check if tasks need to be updated
                 var tasks = context.Tasks.ToList();
                 tasks = tasks.FindAll(t => t.WeekId == week.WeekId);
-                int count = tasks.Count;
 
                 var tasksToUpdate = wt.tasks;
+                int newTaskCount = 0;
                 tasksToUpdate?.ForEach(t =>
                     {
                         //Update the tasks
                         var updateTask = tasks.Find(task => task.TaskId == t.TaskId);
-                        int currentIdx = tasksToUpdate.IndexOf(t);
-
+                        
                         if (updateTask != null)
                         {
+                            int currentIdx = tasksToUpdate.IndexOf(t);
+
                             //Update the current task
                             UpdateTask(updateTask, t, wt, currentIdx);
 
@@ -235,10 +236,11 @@ namespace Project_2_API.Controllers
                             if (wt.dates != null)
                             {
                                 //Create a new entry for the selected days and task
-                                var selectedDaysForTask = wt.dates.ElementAt(currentIdx);
+                                var selectedDaysForTask = wt.dates.ElementAt(newTaskCount);
                                 int selectedDaysId = CreateSelectedDays(selectedDaysForTask, week);
 
                                 CreateNewTask(t, week.WeekId, selectedDaysId);
+                                newTaskCount++;
                             }
                         }
                     });
@@ -407,6 +409,32 @@ namespace Project_2_API.Controllers
             {
                 return NotFound("The week with id " + weekId + " does does exist");
             }
+        }
+
+        [HttpGet]
+        [Route("getCompletedTasks")]
+        public async Task<Object> GetCompletedTasks()
+        {
+            return Ok(await context.CompletedTasks.ToListAsync());
+        }
+
+        [HttpPost]
+        [Route("addCompletedTask")]
+        public async Task<Object> AddCompletedTask(CompletedTask ct){
+            context.CompletedTasks.Add(ct);
+            await context.SaveChangesAsync();
+
+            return Ok("The completed task has been recorded");
+        }
+
+        [HttpDelete]
+        [Route("deleteCompletedTask")]
+        public async Task<Object> DeleteCompletedTask(CompletedTask ct)
+        {
+            context.CompletedTasks.Remove(ct);
+            await context.SaveChangesAsync();
+
+            return Ok("The completed task has been removed");
         }
     }
 }

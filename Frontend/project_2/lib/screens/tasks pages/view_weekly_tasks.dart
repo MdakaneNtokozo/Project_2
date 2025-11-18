@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:ffi';
-
 import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:project_2/api_calls.dart';
@@ -27,6 +24,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
   List<TextEditingController> taskDescControllers = [];
   List<TextEditingController> taskPointsControllers = [];
   List<List<DateTime>> taskDaysSelected = [];
+  List<int> idxRemoved = [];
 
   @override
   void initState() {
@@ -71,13 +69,13 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
     Task task,
     SelectedDays selectedDays,
     Week week,
-    int idx,
+    int idx, 
+    TasksForTheWeek weeklyTasks,
   ) {
-
     return Card(
       child: Container(
         color: Colors.grey,
-        height: 600,
+        height: 650,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -170,6 +168,16 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
               ],
             ),
 
+            enableEdit == true ?
+            ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      weeklyTasks.tasks?.remove(task);
+                    });
+                  },
+                  child: Text("Remove"),
+                ): Container(),
+
             Divider(),
           ],
         ),
@@ -183,18 +191,19 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
       taskDescControllers.add(TextEditingController());
       taskPointsControllers.add(TextEditingController());
       taskDaysSelected.add([]);
+      int index = count;
 
       taskWidgets.add(
         Card(
           child: Container(
             color: Colors.grey,
-            height: 600,
+            height: 650,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Task name"),
                 TextField(
-                  controller: taskNameControllers[count],
+                  controller: taskNameControllers[index],
                   decoration: InputDecoration(
                     hintText: "Enter the name of the task",
                     filled: true,
@@ -204,7 +213,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
 
                 Text("Description"),
                 TextField(
-                  controller: taskDescControllers[count],
+                  controller: taskDescControllers[index],
                   decoration: InputDecoration(
                     hintText: "Enter the task's description",
                     filled: true,
@@ -214,7 +223,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
 
                 Text("Points"),
                 TextField(
-                  controller: taskPointsControllers[count],
+                  controller: taskPointsControllers[index],
                   decoration: InputDecoration(
                     hintText: "Enter the task's points",
                     filled: true,
@@ -238,12 +247,19 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
                         disableModePicker: true,
                         disableMonthPicker: true,
                       ),
-                      value: taskDaysSelected[count],
+                      value: taskDaysSelected[index],
                       onValueChanged: (value) {
-                        taskDaysSelected[count - 1] = value;
+                        taskDaysSelected[index] = value;
                       },
                     ),
                   ],
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    removeTaskWidget(index);
+                  },
+                  child: Text("Remove"),
                 ),
 
                 Divider(),
@@ -257,11 +273,59 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
     });
   }
 
+  void removeTaskWidget(int idx) {
+    setState(() {
+      taskWidgets.removeAt(idx);
+      idxRemoved.add(idx);
+    });
+  }
+
   void saveEdits(TasksForTheWeek wt) {
-    print(tasksForTheWeekToJson(wt));
-    var response = ApiCalls().updateWeeklyTasks(wt);
-    response.then((updated){
-      if(updated == true){
+    if (taskNameControllers.length == taskDescControllers.length &&
+        taskDescControllers.length == taskPointsControllers.length &&
+        taskPointsControllers.length == taskDaysSelected.length) {
+      List<Task> tasks = [];
+      for (int i = 0; i < taskNameControllers.length; i++) {
+        var taskName = taskNameControllers.elementAt(i).text;
+        var taskDesc = taskDescControllers.elementAt(i).text;
+        var taskPoints = taskPointsControllers.elementAt(i).text;
+        if (!idxRemoved.contains(i)) {
+          var newTask = Task(
+            taskId: -1,
+            taskName: taskName,
+            taskDesc: taskDesc,
+            taskPoints: int.parse(taskPoints),
+            weekId: -1,
+            selectedDaysId: -1,
+          );
+
+          tasks.add(newTask);
+        }
+      }
+
+      List<List<DateTime>> dates = [];
+      for(int i = 0; i < taskDaysSelected.length; i++){
+        if(!idxRemoved.contains(i)){
+          dates.add(taskDaysSelected.elementAt(i));
+        }
+      }
+
+      wt.tasks?.addAll(tasks);
+      wt.dates = dates;
+
+      var response = ApiCalls().updateWeeklyTasks(wt);
+      response.then((updated) {
+        if (updated == true) {
+          Navigator.pushNamed(context, "/weeklyTasks");
+        }
+      });
+    }
+  }
+
+  void deleteWeeklyTasks(Week week) {
+    var response = ApiCalls().deleteWeeklyTasks(week);
+    response.then((updated) {
+      if (updated == true) {
         Navigator.pushNamed(context, "/weeklyTasks");
       }
     });
@@ -290,7 +354,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
 
-                  weeklyTasks.tasks!.isNotEmpty
+                  weeklyTasks.tasks != null && weeklyTasks.tasks!.isNotEmpty
                       ? SizedBox(
                           height: 560,
                           child: ListView.builder(
@@ -308,6 +372,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
                                 sd,
                                 weeklyTasks.weeks!.elementAt(0),
                                 idx,
+                                weeklyTasks
                               );
                             },
                           ),
@@ -315,25 +380,25 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
                       : Text("There are no task sections added"),
 
                   taskWidgets.isNotEmpty
-                ? Column(
-                  children: [
-                    Text("New tasks being added"),
-                    SizedBox(
-                        height: 460,
-                        child: ListView.builder(
-                          itemCount: taskWidgets.length,
-                          itemBuilder: (context, idx) {
-                            return taskWidgets[idx];
-                          },
-                        ),
-                      ),
-                  ],
-                )
-                : Container(),
+                      ? Column(
+                          children: [
+                            Text("New tasks being added"),
+                            SizedBox(
+                              height: 460,
+                              child: ListView.builder(
+                                itemCount: taskWidgets.length,
+                                itemBuilder: (context, idx) {
+                                  return taskWidgets[idx];
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                      : Container(),
 
                   enableEdit == true
                       ? ElevatedButton(
-                          onPressed: (){
+                          onPressed: () {
                             addTaskWidget(weeklyTasks);
                           },
                           child: Icon(Icons.add_circle_outline_rounded),
@@ -392,7 +457,9 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
                         ),
 
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            deleteWeeklyTasks(weeklyTasks.weeks!.elementAt(0));
+                          },
                           child: Icon(Icons.delete),
                         ),
                       ],

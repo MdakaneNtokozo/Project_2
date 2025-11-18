@@ -138,6 +138,22 @@
   },
   {
     "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "AddCompletedTask",
+    "RelativePath": "api/Tasks/addCompletedTask",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ct",
+        "Type": "Project_2_API.Models.CompletedTask",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
     "Method": "CreateWeeklyTasks",
     "RelativePath": "api/Tasks/createWeeklyTasks",
     "HttpMethod": "POST",
@@ -147,6 +163,22 @@
       {
         "Name": "wt",
         "Type": "Project_2_API.Helper_classes.WeeklyTasks",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "DeleteCompletedTask",
+    "RelativePath": "api/Tasks/deleteCompletedTask",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "ct",
+        "Type": "Project_2_API.Models.CompletedTask",
         "IsRequired": true
       }
     ],
@@ -166,6 +198,16 @@
         "IsRequired": false
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "GetCompletedTasks",
+    "RelativePath": "api/Tasks/getCompletedTasks",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/completed_tasks.dart';
+import 'package:project_2/models/task.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -24,19 +26,60 @@ class _TasksMainState extends State<TasksMain> {
   void initState() {
     super.initState();
 
-    var result = ApiCalls().getWeeklyTasks();
-    result.then((wt) {
+    var result1 = ApiCalls().getWeeklyTasks();
+    result1.then((wt) {
       setState(() {
         weeklyTasks = wt;
       });
     });
+
+    var result2 = ApiCalls().getCompletedTasks();
+    result2.then((ct) {
+      setState(() {
+        completedTasks = ct;
+      });
+    });
+  }
+
+  void handleCompletedTask(CompletedTask completedTask, Task task) {
+    if (completedTask.taskId == -1) {
+      var response = ApiCalls().addCompletedTask(
+        LoggedInMember().logginInMember!.familyMemberId,
+        task.taskId,
+      );
+      response.then((isAdded) {
+        if (isAdded == true) {
+          var result = ApiCalls().getCompletedTasks();
+          result.then((ct) {
+            setState(() {
+              completedTasks = ct;
+            });
+          });
+        }
+      });
+    } else {
+      var response = ApiCalls().deleteCompletedTask(
+        LoggedInMember().logginInMember!.familyMemberId,
+        task.taskId,
+      );
+      response.then((isDeleted) {
+        if (isDeleted == true) {
+          var result = ApiCalls().getCompletedTasks();
+          result.then((ct) {
+            setState(() {
+              completedTasks = ct;
+            });
+          });
+        }
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Tasks"), centerTitle: true),
-      drawer: TasksDrawer(),
+      appBar: AppBar(title: Text("Tasks"), centerTitle: true,),
+      drawer: LoggedInMember().logginInMember?.familyMemberRole == 1 ? TasksDrawer() : null,
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -52,7 +95,12 @@ class _TasksMainState extends State<TasksMain> {
               onDaySelected: (selectedDay, focusedDay) {
                 setState(() {
                   daySelected = selectedDay;
-                  dayFocused = DateTime.parse(focusedDay.toIso8601String().substring(0, focusedDay.toIso8601String().length - 1));
+                  dayFocused = DateTime.parse(
+                    focusedDay.toIso8601String().substring(
+                      0,
+                      focusedDay.toIso8601String().length - 1,
+                    ),
+                  );
                 });
               },
               calendarFormat: CalendarFormat.week,
@@ -60,7 +108,7 @@ class _TasksMainState extends State<TasksMain> {
               calendarStyle: CalendarStyle(),
             ),
 
-            weeklyTasks.tasks != null
+            weeklyTasks.tasks != null && weeklyTasks.tasks!.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
                     itemCount: weeklyTasks.tasks!.length,
@@ -72,16 +120,13 @@ class _TasksMainState extends State<TasksMain> {
                         (s) => s.selectedDaysId == task.selectedDaysId,
                       );
 
-                      bool isTaskCompleted = completedTasks.any(
-                        (ct) => ct.taskId == task.taskId,
-                      );
-                      var completedTask = completedTasks.firstWhere(
+                      CompletedTask completedTask = completedTasks.firstWhere(
                         (ct) => ct.taskId == task.taskId,
                         orElse: () => CompletedTask(
                           taskId: -1,
                           familyMemberId: -1,
                           timeCompleted:
-                              DateTime.now(), //emty completed task variable
+                              DateTime.now(), //empty completed task variable
                         ),
                       );
 
@@ -105,21 +150,27 @@ class _TasksMainState extends State<TasksMain> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(task.taskDesc),
+
+                                    completedTask.familyMemberId == -1 ||
+                                    completedTask.familyMemberId == LoggedInMember().logginInMember?.familyMemberId ?
                                     Checkbox(
-                                      value: isTaskCompleted == true
+                                      value: completedTask.taskId != -1
                                           ? true
                                           : false,
-                                      onChanged: (value) {},
-                                    ),
+                                      onChanged: (value) {
+                                        handleCompletedTask(completedTask, task);
+                                      },
+                                    ): Icon(Icons.done_all)
+                                    ,
                                   ],
                                 ),
                               ],
                             ),
                           ),
                         );
-                      }else{
-                        return Text("There are no tasks added for today");
                       }
+                      return Text("");
+                      
                     },
                   )
                 : Text("There are no tasks added for today"),

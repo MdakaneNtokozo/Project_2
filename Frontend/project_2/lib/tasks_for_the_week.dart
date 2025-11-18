@@ -69,7 +69,7 @@ class TasksForTheWeek {
     'weeks': wt.weeks,
     'tasks': wt.tasks,
     'dates': wt.dates == null ? null : getDatesAsStrings(wt.dates) ,
-    'selectedDays': List<dynamic>.from(wt.selectedDays!.map((x) => x.toJson())),
+    'selectedDays': wt.selectedDays == null ? null : List<dynamic>.from(wt.selectedDays!.map((x) => x.toJson())),
     'rewards': wt.rewards,
     'monday': wt.monday?.toIso8601String(),
     'sunday': wt.sunday?.toIso8601String()

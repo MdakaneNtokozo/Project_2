@@ -1,27 +1,28 @@
 import 'dart:convert';
-import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:project_2/models/completed_tasks.dart';
 import 'package:project_2/models/family_member.dart';
-import 'package:project_2/models/task.dart';
+import 'package:project_2/models/week.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 
 class ApiCalls {
   //var api = "http://localhost:5063/api";
   var api = "http://10.220.36.84:45455/api";
 
-  Future<bool> login(String email, String password) async {
+  Future<FamilyMember?> login(String email, String password) async {
     Uri uri = Uri.parse(
       "$api/FamilyMembers/login?email=$email&password=$password",
     );
     var response = await http.get(uri);
-    var loginSuccessful = false;
+    FamilyMember? loggedInMember;
 
     if (response.statusCode == 200) {
-      loginSuccessful = true;
+      loggedInMember = familyMemberFromJson(response.body);
     }
 
-    return loginSuccessful;
+    return loggedInMember;
   }
 
   Future<String> signUpAsFamilyAdmin(FamilyMember member) async {
@@ -101,9 +102,6 @@ class ApiCalls {
   Future<bool> createWeeklyTasks(TasksForTheWeek tasksForTheWeek) async {
     var complete = false;
 
-    var data = tasksForTheWeekToJson(tasksForTheWeek);
-    print(data);
-
     Uri uri = Uri.parse("$api/Tasks/createWeeklyTasks");
     var response = await http.post(
       uri,
@@ -135,7 +133,7 @@ class ApiCalls {
     var response = await http.put(
       uri,
       headers: {"Content-Type": "application/json"},
-      body: tasksForTheWeekToJson(weeklyTasks)
+      body: tasksForTheWeekToJson(weeklyTasks),
     );
     bool updated = false;
 
@@ -145,4 +143,81 @@ class ApiCalls {
 
     return updated;
   }
+
+  Future<bool> deleteWeeklyTasks(Week week) async {
+    Uri uri = Uri.parse("$api/Tasks/deleteWeeklyTasks?weekId=${week.weekId}");
+    var response = await http.delete(uri);
+    bool deleted = false;
+
+    if (response.statusCode == 200) {
+      deleted = true;
+    }
+
+    return deleted;
+  }
+
+  Future<List<CompletedTask>> getCompletedTasks() async {
+    Uri uri = Uri.parse("$api/Tasks/getCompletedTasks");
+    var response = await http.get(uri);
+    List<CompletedTask> completedTasks = [];
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+
+      for(int i = 0; i < data.length; i++){
+        completedTasks.add(CompletedTask.fromJson(data[i]));
+      }
+
+    }
+
+    return completedTasks;
+  }
+
+  Future<bool> addCompletedTask(int memberId, int taskId) async{
+    var isAdded = false;
+
+    var completedTask = CompletedTask(
+      taskId: taskId, 
+      familyMemberId: memberId, 
+      timeCompleted: DateTime.now()
+    );
+
+   Uri uri = Uri.parse("$api/Tasks/addCompletedTask");
+    var response = await http.post(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: completedTaskToJson(completedTask),
+    );
+
+    if (response.statusCode == 200) {
+      isAdded = true;
+    }
+
+    return isAdded;
+  }
+
+  Future<bool> deleteCompletedTask(int memberId, int taskId) async{
+    var isDeleted = false;
+
+    var completedTask = CompletedTask(
+      taskId: taskId, 
+      familyMemberId: memberId, 
+      timeCompleted: DateTime.now()
+    );
+
+   Uri uri = Uri.parse("$api/Tasks/deleteCompletedTask");
+    var response = await http.delete(
+      uri,
+      headers: {"Content-Type": "application/json"},
+      body: completedTaskToJson(completedTask),
+    );
+
+    if (response.statusCode == 200) {
+      isDeleted = true;
+    }
+
+    return isDeleted;
+  }
+
+
 }

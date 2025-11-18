@@ -100,7 +100,7 @@ namespace Project_2_API.Controllers
                 var result = pHasher.VerifyHashedPassword(member.FamilyMemberEmail, member.FamilyMemberPassword, password);
                 if (result == PasswordVerificationResult.Success)
                 {
-                    return Ok("Family member has successfully logged in");
+                    return Ok(member);
                 }
                 else
                 {

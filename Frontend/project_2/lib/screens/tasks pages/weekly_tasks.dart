@@ -4,7 +4,6 @@ import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
 import 'package:project_2/models/selected_days.dart';
 import 'package:project_2/models/task.dart';
-import 'package:project_2/screens/tasks%20pages/view_weekly_tasks.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 
 class WeeklyTasks extends StatefulWidget {

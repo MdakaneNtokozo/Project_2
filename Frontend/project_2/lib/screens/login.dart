@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_2/api_calls.dart';
+import 'package:project_2/logged_in_member.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -17,8 +18,9 @@ class _LoginState extends State<Login> {
     logUserIn(){
       if (email.text.isNotEmpty || password.text.isNotEmpty) {
         var result = ApiCalls().login(email.text, password.text);
-        result.then((loginSuccessful) =>{
-          if(loginSuccessful == true){
+        result.then((loggedInUser) =>{
+          if(loggedInUser != null){
+            LoggedInMember().logginInMember = loggedInUser,
             Navigator.pushNamed(context, "/home")
           }
         });

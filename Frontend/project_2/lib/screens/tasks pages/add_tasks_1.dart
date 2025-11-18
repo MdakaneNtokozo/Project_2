@@ -24,6 +24,7 @@ class _AddTasks1State extends State<AddTasks1> {
   List<TextEditingController> taskDescControllers = [];
   List<TextEditingController> taskPointsControllers = [];
   List<List<DateTime>> taskDaysSelected = [];
+  List<int> idxRemoved = [];
 
   void getDates() {
     //Getting the first date of the week
@@ -49,18 +50,19 @@ class _AddTasks1State extends State<AddTasks1> {
       taskDescControllers.add(TextEditingController());
       taskPointsControllers.add(TextEditingController());
       taskDaysSelected.add([]);
+      int index = count;
 
       taskWidgets.add(
         Card(
           child: Container(
             color: Colors.grey,
-            height: 600,
+            height: 650,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text("Task name"),
                 TextField(
-                  controller: taskNameControllers[count],
+                  controller: taskNameControllers[index],
                   decoration: InputDecoration(
                     hintText: "Enter the name of the task",
                     filled: true,
@@ -70,7 +72,7 @@ class _AddTasks1State extends State<AddTasks1> {
 
                 Text("Description"),
                 TextField(
-                  controller: taskDescControllers[count],
+                  controller: taskDescControllers[index],
                   decoration: InputDecoration(
                     hintText: "Enter the task's description",
                     filled: true,
@@ -80,7 +82,7 @@ class _AddTasks1State extends State<AddTasks1> {
 
                 Text("Points"),
                 TextField(
-                  controller: taskPointsControllers[count],
+                  controller: taskPointsControllers[index],
                   decoration: InputDecoration(
                     hintText: "Enter the task's points",
                     filled: true,
@@ -104,12 +106,19 @@ class _AddTasks1State extends State<AddTasks1> {
                         disableModePicker: true,
                         disableMonthPicker: true,
                       ),
-                      value: taskDaysSelected[count],
+                      value: taskDaysSelected[index],
                       onValueChanged: (value) {
-                        taskDaysSelected[count - 1] = value;
+                        taskDaysSelected[index] = value;
                       },
                     ),
                   ],
+                ),
+
+                ElevatedButton(
+                  onPressed: () {
+                    removeTaskWidget(index);
+                  },
+                  child: Text("Remove"),
                 ),
 
                 Divider(),
@@ -120,6 +129,13 @@ class _AddTasks1State extends State<AddTasks1> {
       );
 
       count++;
+    });
+  }
+
+  void removeTaskWidget(int idx) {
+    setState(() {
+      taskWidgets.removeAt(idx);
+      idxRemoved.add(idx);
     });
   }
 
@@ -134,33 +150,41 @@ class _AddTasks1State extends State<AddTasks1> {
         taskDescControllers.length == taskPointsControllers.length &&
         taskPointsControllers.length == taskDaysSelected.length &&
         taskNameControllers.isNotEmpty) {
-
       List<Task> tasks = [];
       for (int i = 0; i < taskNameControllers.length; i++) {
-        var taskName = taskNameControllers.elementAt(i).text;
-        var taskDesc = taskDescControllers.elementAt(i).text;
-        var taskPoints = taskPointsControllers.elementAt(i).text;
+        if (!idxRemoved.contains(i)) {
+          var taskName = taskNameControllers.elementAt(i).text;
+          var taskDesc = taskDescControllers.elementAt(i).text;
+          var taskPoints = taskPointsControllers.elementAt(i).text;
 
-        var newTask = Task(
-          taskId: -1,
-          taskName: taskName,
-          taskDesc: taskDesc,
-          taskPoints: int.parse(taskPoints),
-          weekId: -1,
-          selectedDaysId: -1,
-        );
+          var newTask = Task(
+            taskId: -1,
+            taskName: taskName,
+            taskDesc: taskDesc,
+            taskPoints: int.parse(taskPoints),
+            weekId: -1,
+            selectedDaysId: -1,
+          );
 
-        tasks.add(newTask);
+          tasks.add(newTask);
+        }
+      }
+
+      List<List<DateTime>> dates = [];
+      for(int i = 0; i < taskDaysSelected.length; i++){
+        if(!idxRemoved.contains(i)){
+          dates.add(taskDaysSelected.elementAt(i));
+        }
       }
 
       TasksForTheWeek tasksForTheWeek = TasksForTheWeek(
         weeks: null,
         tasks: tasks,
-        dates: taskDaysSelected,
+        dates: dates,
         selectedDays: null,
         rewards: null,
         monday: monday,
-        sunday: sunday
+        sunday: sunday,
       );
 
       Navigator.pushNamed(context, "/addTasks2", arguments: tasksForTheWeek);
