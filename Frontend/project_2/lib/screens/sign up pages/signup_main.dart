@@ -151,6 +151,10 @@ class _SignupMainState extends State<SignupMain> {
                           }
                           return null;
                         },
+                        decoration: InputDecoration(
+                          filled: true,
+                          border: InputBorder.none,
+                        ),
                       ),
                     ],
                   ),

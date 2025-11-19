@@ -15,5 +15,7 @@ public partial class Task
 
     public int WeekId { get; set; }
 
-    public int SelectedDaysId { get; set; }    
+    public int SelectedDaysId { get; set; }
+
+    public string FamilyGroupId { get; set; } = null!;
 }

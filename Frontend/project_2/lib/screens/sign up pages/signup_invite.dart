@@ -62,6 +62,10 @@ class _SignupInviteState extends State<SignupInvite> {
                       }
                       return null;
                     },
+                    decoration: InputDecoration(
+                          filled: true,
+                          border: InputBorder.none,
+                        ),
                   ),
                 ],
               ),

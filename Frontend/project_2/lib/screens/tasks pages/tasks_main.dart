@@ -26,7 +26,7 @@ class _TasksMainState extends State<TasksMain> {
   void initState() {
     super.initState();
 
-    var result1 = ApiCalls().getWeeklyTasks();
+    var result1 = ApiCalls().getWeeklyTasks(LoggedInMember().logginInMember!.familyGroupId);
     result1.then((wt) {
       setState(() {
         weeklyTasks = wt;
@@ -46,6 +46,7 @@ class _TasksMainState extends State<TasksMain> {
       var response = ApiCalls().addCompletedTask(
         LoggedInMember().logginInMember!.familyMemberId,
         task.taskId,
+        completedTask.dayNeededToBeCompleted
       );
       response.then((isAdded) {
         if (isAdded == true) {
@@ -58,10 +59,7 @@ class _TasksMainState extends State<TasksMain> {
         }
       });
     } else {
-      var response = ApiCalls().deleteCompletedTask(
-        LoggedInMember().logginInMember!.familyMemberId,
-        task.taskId,
-      );
+      var response = ApiCalls().deleteCompletedTask(completedTask);
       response.then((isDeleted) {
         if (isDeleted == true) {
           var result = ApiCalls().getCompletedTasks();
@@ -121,12 +119,15 @@ class _TasksMainState extends State<TasksMain> {
                       );
 
                       CompletedTask completedTask = completedTasks.firstWhere(
-                        (ct) => ct.taskId == task.taskId,
+                        (ct){ 
+                          return ct.taskId == task.taskId && 
+                          ct.dayNeededToBeCompleted == dayFocused;
+                          },
                         orElse: () => CompletedTask(
                           taskId: -1,
                           familyMemberId: -1,
-                          timeCompleted:
-                              DateTime.now(), //empty completed task variable
+                          dayNeededToBeCompleted: dayFocused,
+                          dayActuallyCompleted:DateTime(1, 1, 1)
                         ),
                       );
 
@@ -151,17 +152,21 @@ class _TasksMainState extends State<TasksMain> {
                                   children: [
                                     Text(task.taskDesc),
 
-                                    completedTask.familyMemberId == -1 ||
-                                    completedTask.familyMemberId == LoggedInMember().logginInMember?.familyMemberId ?
+                                    completedTask.familyMemberId == LoggedInMember().logginInMember?.familyMemberId?
                                     Checkbox(
-                                      value: completedTask.taskId != -1
-                                          ? true
-                                          : false,
-                                      onChanged: (value) {
+                                      value: true, 
+                                      onChanged: (newVal){
                                         handleCompletedTask(completedTask, task);
-                                      },
-                                    ): Icon(Icons.done_all)
-                                    ,
+                                      }
+                                      ): 
+                                      completedTask.familyMemberId > -1?
+                                      Icon(Icons.done_all_outlined): 
+                                       Checkbox(
+                                      value: false, 
+                                      onChanged: (newVal){
+                                        handleCompletedTask(completedTask, task);
+                                      }
+                                      )
                                   ],
                                 ),
                               ],

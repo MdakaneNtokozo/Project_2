@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/selected_days.dart';
 import 'package:project_2/models/task.dart';
 import 'package:project_2/tasks_for_the_week.dart';
@@ -21,7 +22,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   @override
   void initState() {
     super.initState();
-    var result = ApiCalls().getWeeklyTasks();
+    var result = ApiCalls().getWeeklyTasks(LoggedInMember().logginInMember!.familyGroupId);
     result.then((wt) =>{
       setState(() {
         weeklyTasks = wt;

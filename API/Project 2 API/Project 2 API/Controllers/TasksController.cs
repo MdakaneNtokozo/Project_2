@@ -21,11 +21,25 @@ namespace Project_2_API.Controllers
 
         [HttpGet]
         [Route("getWeeklyTasks")]
-        public async Task<Object> GetWeeklyTasks()
+        public async Task<Object> GetWeeklyTasks(String groupId)
         {
             var weeks = await context.Weeks.ToListAsync();
             var tasks = await context.Tasks.ToListAsync();
+            tasks = tasks.FindAll(t => t.FamilyGroupId == groupId);
+
             var selectedDays = await context.SelectedDays.ToListAsync();
+            List<SelectedDay> tasksSelectedDays = [];
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                var task = tasks[i];
+                var selectedDaysForCurrentTask = selectedDays.Find(sd => sd.SelectedDaysId == task.SelectedDaysId);
+
+                if(selectedDaysForCurrentTask != null)
+                {
+                    tasksSelectedDays.Add(selectedDaysForCurrentTask);
+                }
+            }
+
             var rewards = await context.Rewards.ToListAsync();
 
             WeeklyTasks wt = new()
@@ -33,7 +47,7 @@ namespace Project_2_API.Controllers
                 weeks = weeks,
                 tasks = tasks,
                 dates = null,
-                selectedDays = selectedDays,
+                selectedDays = tasksSelectedDays,
                 rewards = rewards,
                 monday = null,
                 sunday = null
@@ -136,13 +150,16 @@ namespace Project_2_API.Controllers
                 lastIdx = tasks.ElementAt(tasks.Count - 1).TaskId + 1;
             }
 
-            var newTask = new Task();
-            newTask.TaskId = lastIdx;
-            newTask.TaskName = taskInfo.TaskName;
-            newTask.TaskDesc = taskInfo.TaskDesc;
-            newTask.TaskPoints = taskInfo.TaskPoints;
-            newTask.WeekId = weekId;
-            newTask.SelectedDaysId = selectedDaysId;
+            var newTask = new Task
+            {
+                TaskId = lastIdx,
+                TaskName = taskInfo.TaskName,
+                TaskDesc = taskInfo.TaskDesc,
+                TaskPoints = taskInfo.TaskPoints,
+                WeekId = weekId,
+                SelectedDaysId = selectedDaysId,
+                FamilyGroupId = taskInfo.FamilyGroupId
+            };
 
             context.Tasks.Add(newTask);
             context.SaveChanges();

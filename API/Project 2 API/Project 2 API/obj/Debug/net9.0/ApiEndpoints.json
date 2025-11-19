@@ -137,6 +137,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Project_2_API.Controllers.LeaderboardController",
+    "Method": "GetLeaderboard",
+    "RelativePath": "api/Leaderboard",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "groupid",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Project_2_API.Controllers.TasksController",
     "Method": "AddCompletedTask",
     "RelativePath": "api/Tasks/addCompletedTask",
@@ -217,7 +233,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "groupId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

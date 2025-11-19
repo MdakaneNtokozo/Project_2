@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|c:\\users\\ntokozo\\downloads\\project_2\\api\\project 2 api\\project 2 api\\controllers\\taskscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|solutionrelative:project 2 api\\controllers\\taskscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|c:\\users\\ntokozo\\downloads\\project_2\\api\\project 2 api\\project 2 api\\controllers\\familymemberscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|solutionrelative:project 2 api\\controllers\\familymemberscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|c:\\users\\ntokozo\\downloads\\project_2\\api\\project 2 api\\project 2 api\\controllers\\leaderboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|solutionrelative:project 2 api\\controllers\\leaderboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,40 +14,19 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "TasksController.cs",
-              "DocumentMoniker": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\TasksController.cs",
-              "RelativeDocumentMoniker": "Project 2 API\\Controllers\\TasksController.cs",
-              "ToolTip": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\TasksController.cs",
-              "RelativeToolTip": "Project 2 API\\Controllers\\TasksController.cs",
-              "ViewState": "AgIAAJoBAAAAAAAAAAAAAKEBAABCAAAAAAAAAA==",
+              "Title": "LeaderboardController.cs",
+              "DocumentMoniker": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\LeaderboardController.cs",
+              "RelativeDocumentMoniker": "Project 2 API\\Controllers\\LeaderboardController.cs",
+              "ToolTip": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\LeaderboardController.cs",
+              "RelativeToolTip": "Project 2 API\\Controllers\\LeaderboardController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAAABwAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T06:04:15.922Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "FamilyMembersController.cs",
-              "DocumentMoniker": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\FamilyMembersController.cs",
-              "RelativeDocumentMoniker": "Project 2 API\\Controllers\\FamilyMembersController.cs",
-              "ToolTip": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\FamilyMembersController.cs",
-              "RelativeToolTip": "Project 2 API\\Controllers\\FamilyMembersController.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAIwGYAAAAkAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T05:43:45.44Z",
+              "WhenOpened": "2025-11-18T19:43:22.659Z",
               "EditorCaption": ""
             }
           ]

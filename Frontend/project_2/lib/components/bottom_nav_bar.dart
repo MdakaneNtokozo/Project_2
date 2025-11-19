@@ -39,6 +39,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 Navigator.pushNamed(context, "/tasksMain");
                 break;
               }
+              case 2:
+              {
+                Navigator.pushNamed(context, "/leaderboard");
+              }
           }
         });
       },

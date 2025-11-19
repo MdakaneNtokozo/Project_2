@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/selected_days.dart';
 import 'package:project_2/models/task.dart';
 import 'package:project_2/models/week.dart';
@@ -297,6 +298,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
             taskPoints: int.parse(taskPoints),
             weekId: -1,
             selectedDaysId: -1,
+            familyGroupId: LoggedInMember().logginInMember!.familyGroupId
           );
 
           tasks.add(newTask);

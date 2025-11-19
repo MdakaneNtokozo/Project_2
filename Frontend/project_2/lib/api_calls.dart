@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:project_2/models/completed_tasks.dart';
 import 'package:project_2/models/family_member.dart';
+import 'package:project_2/models/leaderboard_class.dart';
 import 'package:project_2/models/week.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 
@@ -116,8 +117,8 @@ class ApiCalls {
     return complete;
   }
 
-  Future<TasksForTheWeek> getWeeklyTasks() async {
-    Uri uri = Uri.parse("$api/Tasks/getWeeklyTasks");
+  Future<TasksForTheWeek> getWeeklyTasks(String groupId) async {
+    Uri uri = Uri.parse("$api/Tasks/getWeeklyTasks?groupId=$groupId");
     var response = await http.get(uri);
 
     late TasksForTheWeek weeklyTasks;
@@ -173,13 +174,14 @@ class ApiCalls {
     return completedTasks;
   }
 
-  Future<bool> addCompletedTask(int memberId, int taskId) async{
+  Future<bool> addCompletedTask(int memberId, int taskId, DateTime dayNeededToBeCompleted) async{
     var isAdded = false;
 
     var completedTask = CompletedTask(
       taskId: taskId, 
       familyMemberId: memberId, 
-      timeCompleted: DateTime.now()
+      dayNeededToBeCompleted: dayNeededToBeCompleted,
+      dayActuallyCompleted: DateTime.now()
     );
 
    Uri uri = Uri.parse("$api/Tasks/addCompletedTask");
@@ -196,14 +198,9 @@ class ApiCalls {
     return isAdded;
   }
 
-  Future<bool> deleteCompletedTask(int memberId, int taskId) async{
+  Future<bool> deleteCompletedTask(CompletedTask completedTask) async{
     var isDeleted = false;
 
-    var completedTask = CompletedTask(
-      taskId: taskId, 
-      familyMemberId: memberId, 
-      timeCompleted: DateTime.now()
-    );
 
    Uri uri = Uri.parse("$api/Tasks/deleteCompletedTask");
     var response = await http.delete(
@@ -219,5 +216,20 @@ class ApiCalls {
     return isDeleted;
   }
 
+  Future<List<LeaderboardClass>> getLeaderboardEntries(String? groupId) async {
+    Uri uri = Uri.parse("$api/Leaderboard?groupid=$groupId");
+    var response = await http.get(uri);
+    List<LeaderboardClass> entries = [];
 
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+
+      for(int i = 0; i < data.length; i++){
+        entries.add(LeaderboardClass.fromJson(data[i]));
+      }
+
+    }
+
+    return entries;
+  }
 }

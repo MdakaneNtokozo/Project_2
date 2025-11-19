@@ -42,9 +42,9 @@ public partial class Project2DatabaseContext : DbContext
 
         modelBuilder.Entity<CompletedTask>(entity =>
         {
-            entity.HasKey(e => new { e.TaskId, e.FamilyMemberId })
+            entity.HasKey(e => new { e.TaskId, e.FamilyMemberId, e.DayNeededToBeCompleted })
                 .HasName("PRIMARY")
-                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0, 0 });
 
             entity.ToTable("completed_task");
 
@@ -52,9 +52,12 @@ public partial class Project2DatabaseContext : DbContext
 
             entity.Property(e => e.TaskId).HasColumnName("task_id");
             entity.Property(e => e.FamilyMemberId).HasColumnName("family_member_id");
-            entity.Property(e => e.TimeCompleted)
+            entity.Property(e => e.DayNeededToBeCompleted)
                 .HasColumnType("datetime")
-                .HasColumnName("time_completed");
+                .HasColumnName("day_needed_to_be_completed");
+            entity.Property(e => e.DayActuallyCompleted)
+                .HasColumnType("datetime")
+                .HasColumnName("day_actually_completed");
 
             
 
@@ -161,6 +164,10 @@ public partial class Project2DatabaseContext : DbContext
             entity.Property(e => e.TaskId)
                 .ValueGeneratedNever()
                 .HasColumnName("task_id");
+            entity.Property(e => e.FamilyGroupId)
+                .HasMaxLength(30)
+                .IsFixedLength()
+                .HasColumnName("family_group_id");
             entity.Property(e => e.SelectedDaysId).HasColumnName("selected_days_id");
             entity.Property(e => e.TaskDesc)
                 .HasMaxLength(150)

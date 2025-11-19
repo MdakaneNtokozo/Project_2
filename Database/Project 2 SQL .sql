@@ -47,6 +47,7 @@ CREATE TABLE task(
     task_points INT NOT NULL,
 	week_id INT NOT NULL,
 	selected_days_id INT NOT NULL,
+    family_group_id CHAR(30) NOT NULL,
 	FOREIGN KEY (week_id) REFERENCES week(week_id),
 	FOREIGN KEY (selected_days_id) REFERENCES selected_days(selected_days_id)
 );
@@ -54,8 +55,9 @@ CREATE TABLE task(
 CREATE TABLE completed_task(
 	task_id INT NOT NULL,
 	family_member_id INT NOT NULL,
-	time_completed DATETIME NOT NULL,
-	PRIMARY KEY (task_id, family_member_id),
+	day_needed_to_be_completed DATETIME NOT NULL,
+    day_actually_completed DATETIME NOT NULL,
+	PRIMARY KEY (task_id, family_member_id, day_needed_to_be_completed),
 	FOREIGN KEY (task_id) REFERENCES task(task_id),
 	FOREIGN KEY (family_member_id) REFERENCES family_member(family_member_id)
 );

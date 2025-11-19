@@ -78,7 +78,12 @@ class _LoginState extends State<Login> {
                   ],
                 ),
 
-                Text("Forgot password"),
+                TextButton(
+                  onPressed: (){
+                    Navigator.pushNamed(context, "/signupmain");
+                  }, 
+                  child: Text("Sign up")
+                  ),
 
                 SizedBox(
                   width: MediaQuery.widthOf(context) * 0.8,

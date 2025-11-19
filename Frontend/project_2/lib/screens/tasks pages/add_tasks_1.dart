@@ -2,6 +2,7 @@ import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
+import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/task.dart';
 import 'package:project_2/tasks_for_the_week.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
@@ -164,6 +165,7 @@ class _AddTasks1State extends State<AddTasks1> {
             taskPoints: int.parse(taskPoints),
             weekId: -1,
             selectedDaysId: -1,
+            familyGroupId: LoggedInMember().logginInMember!.familyGroupId
           );
 
           tasks.add(newTask);

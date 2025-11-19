@@ -11,6 +11,7 @@ class Task {
     int taskPoints;
     int weekId;
     int selectedDaysId;
+    String familyGroupId;
 
     Task({
         required this.taskId,
@@ -19,6 +20,7 @@ class Task {
         required this.taskPoints,
         required this.weekId,
         required this.selectedDaysId,
+        required this.familyGroupId,
     });
 
     factory Task.fromJson(Map<String, dynamic> json) => Task(
@@ -28,6 +30,7 @@ class Task {
         taskPoints: json["taskPoints"],
         weekId: json["weekId"],
         selectedDaysId: json["selectedDaysId"],
+        familyGroupId: json["familyGroupId"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -37,5 +40,6 @@ class Task {
         "taskPoints": taskPoints,
         "weekId": weekId,
         "selectedDaysId": selectedDaysId,
+        "familyGroupId": familyGroupId,
     };
 }
