@@ -52,7 +52,7 @@ namespace Project_2_API.Controllers
 
                     Leaderboard entry = new Leaderboard{
                         member = memberFound,
-                        numTasksCompleted = 1,
+                        tasksCompleted = [task],
                         totalPoints = task.TaskPoints
                     };
 
@@ -67,7 +67,10 @@ namespace Project_2_API.Controllers
                     {
                         var updateEntry = leaderboard[index];
                         updateEntry.totalPoints += task.TaskPoints;
-                        updateEntry.numTasksCompleted++;
+                        if (!updateEntry.tasksCompleted.Contains(task))
+                        {
+                            updateEntry.tasksCompleted.Add(task);
+                        }
 
                         leaderboard.RemoveAt(index);
                         leaderboard.Add(updateEntry);
@@ -80,7 +83,7 @@ namespace Project_2_API.Controllers
                         Leaderboard entry = new Leaderboard
                         {
                             member = memberFound,
-                            numTasksCompleted = 1,
+                            tasksCompleted = [task],
                             totalPoints = task.TaskPoints
                         };
 

@@ -45,7 +45,6 @@ class _LeaderboardState extends State<Leaderboard> {
               color: Color.fromARGB(255, 57, 166, 255),
             ),
 
-
             entries.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
@@ -53,32 +52,38 @@ class _LeaderboardState extends State<Leaderboard> {
                     itemBuilder: (context, idx) {
                       var entry = entries[idx];
 
-                      return Card(
-                        child: Container(
-                            color: const Color.fromARGB(255, 238, 238, 238),
-                            height: 100,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(
-                                  width: MediaQuery.widthOf(context) * 0.15,
-                                  child: Center(child: Text("${idx + 1}"))
+                      return GestureDetector(
+                        child: Card(
+                          child: Container(
+                              color: const Color.fromARGB(255, 238, 238, 238),
+                              height: 100,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    width: MediaQuery.widthOf(context) * 0.15,
+                                    child: Center(child: Text("${idx + 1}"))
+                                    ),
+                        
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text("${entry.member.familyMemberName} ${entry.member.familyMemberSurname}"),
+                                      Text("Tasks completed: ${entry.tasksCompleted.length}"),
+                                      Text("Total points: ${entry.totalPoints}")
+                                    ],
                                   ),
-
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text("${entry.member.familyMemberName} ${entry.member.familyMemberSurname}"),
-                                    Text("Tasks completed: ${entry.numTasksCompleted}"),
-                                    Text("Total points: ${entry.totalPoints}")
-                                  ],
-                                ),
-
-                                idx + 1 == 1 ? 
-                                Icon(Icons.star, color: Colors.yellow,): Text("")
-                              ],
-                            )
-                        )
+                        
+                                  idx + 1 == 1 ? 
+                                  Icon(Icons.star, color: Colors.yellow,): Text("")
+                                ],
+                              )
+                          )
+                        ),
+                        onTap: () {
+                          
+                          Navigator.pushNamed(context, "/viewLeaderboardEntry", arguments: entry);
+                        },
                       );
                             
                     },

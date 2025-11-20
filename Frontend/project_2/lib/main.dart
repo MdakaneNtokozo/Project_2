@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_2/screens/home.dart';
-import 'package:project_2/screens/leaderboard.dart';
+import 'package:project_2/screens/leaderboard/leaderboard.dart';
+import 'package:project_2/screens/leaderboard/view_leaderboard_entry.dart';
 import 'package:project_2/screens/login.dart';
 import 'package:project_2/screens/sign%20up%20pages/signup_group_id.dart';
 import 'package:project_2/screens/sign%20up%20pages/signup_invite.dart';
@@ -26,7 +27,8 @@ void main() {
         "/addTasks2": (context) => AddTasks2(),
         "/weeklyTasks": (context) => WeeklyTasks(),
         "/viewWeeklyTasks": (context) => ViewWeeklyTasks(),
-        "/leaderboard": (context) => Leaderboard()
+        "/leaderboard": (context) => Leaderboard(),
+        "/viewLeaderboardEntry": (context) => ViewLeaderboardEntry()
       },
       debugShowCheckedModeBanner: false,
     )

@@ -10,4 +10,5 @@ class LoggedInMember {
   LoggedInMember._internal();
 
   FamilyMember? logginInMember;
+  int bottomNavIdx = 0;
 }

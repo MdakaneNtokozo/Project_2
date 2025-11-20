@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_2/logged_in_member.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -17,16 +18,15 @@ class _BottomNavBarState extends State<BottomNavBar> {
     BottomNavigationBarItem(icon: Icon(Icons.list), label: "Leaderboard"),
     BottomNavigationBarItem(icon: Icon(Icons.star), label: "Rewards"),
   ];
-  int currentNavItem = 0;
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       items: navItems,
-      currentIndex: currentNavItem,
+      currentIndex: LoggedInMember().bottomNavIdx,
       onTap: (value) {
         setState(() {
-          currentNavItem = value;
+          LoggedInMember().bottomNavIdx = value;
           
           switch (value) {
             case 0:
