@@ -5,7 +5,7 @@ import 'package:project_2/components/tasks_drawer.dart';
 import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/completed_tasks.dart';
 import 'package:project_2/models/task.dart';
-import 'package:project_2/tasks_for_the_week.dart';
+import 'package:project_2/helper%20models/tasks_for_the_week.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class TasksMain extends StatefulWidget {

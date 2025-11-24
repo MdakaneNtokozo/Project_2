@@ -12,15 +12,20 @@ namespace Project_2_API.Controllers
     public class LeaderboardController : ControllerBase
     {
         Project2DatabaseContext context;
-        public LeaderboardController(Project2DatabaseContext _context) { 
+        public LeaderboardController(Project2DatabaseContext _context) {
             context = _context;
         }
 
         [HttpGet]
         public async Task<Object> GetLeaderboard(String groupid)
         {
+            var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var weeks = await context.Weeks.ToListAsync();
+            var week = weeks.Find((w) => w.Monday == today || w.Tuesday == today || w.Wednesday == today ||
+                       w.Thursday == today || w.Friday == today || w.Saturday == today || w.Sunday == today);
+
             var tasks = await context.Tasks.ToListAsync();
-            tasks = tasks.FindAll(t => t.FamilyGroupId == groupid);
+            tasks = tasks.FindAll(t => t.FamilyGroupId == groupid && t.WeekId == week.WeekId);
 
             var completedTasks = await context.CompletedTasks.ToListAsync();
             List<CompletedTask>  completedTasksForCurrentGroup = [];
@@ -107,6 +112,39 @@ namespace Project_2_API.Controllers
             });
 
             return Ok(leaderboard);
+        }
+
+        [HttpPost]
+        [Route("rewardWinnerOfTheWeek")]
+        public async Task<Object> RewardWinnerOfTheWeek(int familyMemberId)
+        {
+            var today = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+            var weeks = await context.Weeks.ToListAsync();
+            var week = weeks.Find((w) => w.Monday == today || w.Tuesday == today || w.Wednesday == today ||
+                       w.Thursday == today || w.Friday == today || w.Saturday == today || w.Sunday == today);
+
+            var members = await context.FamilyMembers.ToListAsync();
+            var member = members.Find((m) => m.FamilyMemberId == familyMemberId);
+
+            if (week != null && member != null)
+            {
+                var rewardToMember = new WonReward()
+                {
+                    RewardId = week.RewardId,
+                    FamilyMemberId = member.FamilyMemberId,
+                    DateRewarded = DateTime.Now,
+                };
+
+                context.WonRewards.Add(rewardToMember);
+                await context.SaveChangesAsync();
+
+                return Ok("Family member has been rewarded");
+            }
+            else
+            {
+                return NotFound("The current week or family member was not found.");
+            }
+
         }
     }
 }

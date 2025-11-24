@@ -3,7 +3,7 @@ import 'package:project_2/api_calls.dart';
 import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
 import 'package:project_2/models/reward.dart';
-import 'package:project_2/tasks_for_the_week.dart';
+import 'package:project_2/helper%20models/tasks_for_the_week.dart';
 
 class AddTasks2 extends StatefulWidget {
   const AddTasks2({super.key});

@@ -3,6 +3,7 @@ import 'package:project_2/screens/home.dart';
 import 'package:project_2/screens/leaderboard/leaderboard.dart';
 import 'package:project_2/screens/leaderboard/view_leaderboard_entry.dart';
 import 'package:project_2/screens/login.dart';
+import 'package:project_2/screens/rewards.dart';
 import 'package:project_2/screens/sign%20up%20pages/signup_group_id.dart';
 import 'package:project_2/screens/sign%20up%20pages/signup_invite.dart';
 import 'package:project_2/screens/sign%20up%20pages/signup_main.dart';
@@ -28,7 +29,8 @@ void main() {
         "/weeklyTasks": (context) => WeeklyTasks(),
         "/viewWeeklyTasks": (context) => ViewWeeklyTasks(),
         "/leaderboard": (context) => Leaderboard(),
-        "/viewLeaderboardEntry": (context) => ViewLeaderboardEntry()
+        "/viewLeaderboardEntry": (context) => ViewLeaderboardEntry(),
+        "/rewards": (context) => Rewards()
       },
       debugShowCheckedModeBanner: false,
     )

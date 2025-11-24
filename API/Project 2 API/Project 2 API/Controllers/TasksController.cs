@@ -453,5 +453,59 @@ namespace Project_2_API.Controllers
 
             return Ok("The completed task has been removed");
         }
+
+        [HttpGet]
+        [Route("getWeeklyInfo")]
+        public async Task<Object> GetWeeklyInfo(String groupId)
+        {
+            var tasks = await context.Tasks.ToListAsync();
+            tasks = tasks.FindAll(t => t.FamilyGroupId == groupId);
+
+            var weeks = await context.Weeks.ToListAsync();
+            var rewards = await context.Rewards.ToListAsync();
+            var rewardsWon = await context.WonRewards.ToListAsync();
+            List<Week> weeksSelected = [];
+            List<Reward> rewardsSelected = [];
+            List<WonReward> wonRewardsSelected = [];
+
+            for(int i = 0; i < weeks.Count; i++)
+            {
+                var currentWeek = weeks[i];
+                var rewardFound = rewards.Find((r) => r.RewardId == currentWeek.RewardId);
+                var rewardWon = rewardsWon.Find((r) => r.RewardId == currentWeek.RewardId);
+
+                weeksSelected.Add(currentWeek);
+                if (rewardFound != null)
+                {
+                    rewardsSelected.Add(rewardFound);
+                }
+
+                if(rewardWon != null)
+                {
+                    wonRewardsSelected.Add(rewardWon);
+                }
+                else
+                {
+                    var tempReward = new WonReward()
+                    {
+                        RewardId = -1,
+                        FamilyMemberId = -1,
+                        DateRewarded = DateTime.Now,
+                    };
+
+                    wonRewardsSelected.Add(tempReward);
+                }
+                
+            }
+
+            var weeksInfo = new WeeklyTasks()
+            {
+                weeks = weeksSelected,
+                rewards = rewardsSelected,
+                rewardsWon = wonRewardsSelected
+            };
+
+            return Ok(weeksInfo);
+        }
     }
 }

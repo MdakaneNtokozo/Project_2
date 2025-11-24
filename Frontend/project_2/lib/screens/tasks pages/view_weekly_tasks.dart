@@ -7,7 +7,7 @@ import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/selected_days.dart';
 import 'package:project_2/models/task.dart';
 import 'package:project_2/models/week.dart';
-import 'package:project_2/tasks_for_the_week.dart';
+import 'package:project_2/helper%20models/tasks_for_the_week.dart';
 
 class ViewWeeklyTasks extends StatefulWidget {
   const ViewWeeklyTasks({super.key});

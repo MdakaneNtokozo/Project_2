@@ -5,10 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|c:\\users\\ntokozo\\downloads\\project_2\\api\\project 2 api\\project 2 api\\controllers\\leaderboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|solutionrelative:project 2 api\\controllers\\leaderboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|c:\\users\\ntokozo\\downloads\\project_2\\api\\project 2 api\\project 2 api\\helper classes\\leaderboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1F6296C3-8A8B-4861-A9F8-0F7B5A14B22F}|Project 2 API\\Project 2 API.csproj|solutionrelative:project 2 api\\helper classes\\leaderboard.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,26 +26,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Leaderboard.cs",
-              "DocumentMoniker": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Helper classes\\Leaderboard.cs",
-              "RelativeDocumentMoniker": "Project 2 API\\Helper classes\\Leaderboard.cs",
-              "ToolTip": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Helper classes\\Leaderboard.cs",
-              "RelativeToolTip": "Project 2 API\\Helper classes\\Leaderboard.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-19T09:15:56.174Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "LeaderboardController.cs",
               "DocumentMoniker": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\LeaderboardController.cs",
               "RelativeDocumentMoniker": "Project 2 API\\Controllers\\LeaderboardController.cs",
               "ToolTip": "C:\\Users\\Ntokozo\\Downloads\\Project_2\\API\\Project 2 API\\Project 2 API\\Controllers\\LeaderboardController.cs",
               "RelativeToolTip": "Project 2 API\\Controllers\\LeaderboardController.cs",
-              "ViewState": "AgIAAEEAAAAAAAAAAAAmwFcAAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAAAIIAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-18T19:43:22.659Z",
               "EditorCaption": ""

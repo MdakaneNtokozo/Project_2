@@ -43,6 +43,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
               {
                 Navigator.pushNamed(context, "/leaderboard");
               }
+              case 3:
+              {
+                Navigator.pushNamed(context, "/rewards");
+              }
           }
         });
       },

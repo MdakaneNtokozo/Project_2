@@ -153,6 +153,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "Project_2_API.Controllers.LeaderboardController",
+    "Method": "RewardWinnerOfTheWeek",
+    "RelativePath": "api/Leaderboard/rewardWinnerOfTheWeek",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "familyMemberId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Project_2_API.Controllers.TasksController",
     "Method": "AddCompletedTask",
     "RelativePath": "api/Tasks/addCompletedTask",
@@ -224,6 +240,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Project_2_API.Controllers.TasksController",
+    "Method": "GetWeeklyInfo",
+    "RelativePath": "api/Tasks/getWeeklyInfo",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "groupId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {

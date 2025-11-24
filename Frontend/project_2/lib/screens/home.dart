@@ -4,7 +4,7 @@ import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/completed_tasks.dart';
 import 'package:project_2/models/task.dart';
-import 'package:project_2/tasks_for_the_week.dart';
+import 'package:project_2/helper%20models/tasks_for_the_week.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

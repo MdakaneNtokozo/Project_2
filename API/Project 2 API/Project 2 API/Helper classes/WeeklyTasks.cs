@@ -12,5 +12,6 @@ namespace Project_2_API.Helper_classes
         public List<Reward>? rewards { get; set; }
         public DateTime? monday { get; set; }
         public DateTime? sunday { get; set; }
+        public List< WonReward>? rewardsWon {get; set; }
     }
 }

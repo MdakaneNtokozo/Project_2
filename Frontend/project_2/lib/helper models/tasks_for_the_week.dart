@@ -4,6 +4,8 @@ import 'package:project_2/models/task.dart';
 import 'package:project_2/models/week.dart';
 import 'dart:convert';
 
+import 'package:project_2/models/won_reward.dart';
+
 TasksForTheWeek tasksForTheWeekFromJson(String str) => TasksForTheWeek.fromJson(json.decode(str));
 
 String tasksForTheWeekToJson(TasksForTheWeek data) => json.encode(TasksForTheWeek.toJson(data));
@@ -16,6 +18,7 @@ class TasksForTheWeek {
     List<Reward>? rewards;
     DateTime? monday;
     DateTime? sunday;
+    List<WonReward>? rewardsWon;
 
     TasksForTheWeek({
         this.weeks,
@@ -25,6 +28,7 @@ class TasksForTheWeek {
         this.rewards,
         this.monday,
         this.sunday,
+        this.rewardsWon
     });
 
     factory TasksForTheWeek.fromJson(Map<String, dynamic> json) => TasksForTheWeek(
@@ -35,6 +39,7 @@ class TasksForTheWeek {
         rewards: json["rewards"] == null? null : List<Reward>.from(json["rewards"].map((x) => Reward.fromJson(x))),
         monday: json["monday"] == null? null : DateTime.parse(json["monday"]),
         sunday: json["sunday"] == null? null : DateTime.parse(json["sunday"]),
+        rewardsWon: json["rewardsWon"] == null? null : List<WonReward>.from(json["rewardsWon"].map((x) => WonReward.fromJson(x)))
     );
 
     static List<List<String>> getDatesAsStrings(List<List<DateTime>>? dates){
@@ -72,7 +77,8 @@ class TasksForTheWeek {
     'selectedDays': wt.selectedDays == null ? null : List<dynamic>.from(wt.selectedDays!.map((x) => x.toJson())),
     'rewards': wt.rewards,
     'monday': wt.monday?.toIso8601String(),
-    'sunday': wt.sunday?.toIso8601String()
+    'sunday': wt.sunday?.toIso8601String(),
+    'rewardsWon': wt.rewardsWon,
   };
 
   

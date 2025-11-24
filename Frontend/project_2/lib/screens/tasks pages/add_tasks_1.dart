@@ -4,7 +4,7 @@ import 'package:project_2/components/bottom_nav_bar.dart';
 import 'package:project_2/components/tasks_drawer.dart';
 import 'package:project_2/logged_in_member.dart';
 import 'package:project_2/models/task.dart';
-import 'package:project_2/tasks_for_the_week.dart';
+import 'package:project_2/helper%20models/tasks_for_the_week.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 class AddTasks1 extends StatefulWidget {
@@ -187,6 +187,7 @@ class _AddTasks1State extends State<AddTasks1> {
         rewards: null,
         monday: monday,
         sunday: sunday,
+        rewardsWon: null
       );
 
       Navigator.pushNamed(context, "/addTasks2", arguments: tasksForTheWeek);

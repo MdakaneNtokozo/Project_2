@@ -26,6 +26,10 @@ class _LeaderboardState extends State<Leaderboard> {
     });
   }
 
+  void rewardWinner(int memberId){
+    var response = ApiCalls().rewardTheWinner(memberId);
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,6 +93,11 @@ class _LeaderboardState extends State<Leaderboard> {
                     },
                   )
                 : Text("No one has completed their tasks yet"),
+
+                ElevatedButton(
+                  onPressed: () => rewardWinner(entries[0].member.familyMemberId), 
+                  child: Text("Reward the winner")
+                )
           ],
         ),
       ),
