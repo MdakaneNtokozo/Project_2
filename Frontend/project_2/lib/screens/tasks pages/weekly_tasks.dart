@@ -59,7 +59,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Tasks"), centerTitle: true),
+      appBar: AppBar(title: Text("Weekly tasks"), centerTitle: true),
       drawer: TasksDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(12.0),

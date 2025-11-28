@@ -56,7 +56,7 @@ class _AddTasks1State extends State<AddTasks1> {
       taskWidgets.add(
         Card(
           child: Container(
-            color: Colors.grey,
+            color: const Color.fromARGB(255, 99, 182, 250),
             height: 650,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,6 +215,8 @@ class _AddTasks1State extends State<AddTasks1> {
                 getDates();
               },
               enableWeeknumberText: true,
+              backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+              weeknumberColor:   const Color.fromARGB(255, 57, 166, 255),
             ),
 
             Divider(),

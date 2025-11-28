@@ -234,7 +234,7 @@ class ApiCalls {
   }
 
   Future<List<FamilyMember>> getFamilyMembers() async {
-    Uri uri = Uri.parse("$api/FamilyMembers/FamilyMembers");
+    Uri uri = Uri.parse("$api/FamilyMembers/getFamilyMembers");
     var response = await http.get(uri);
     List<FamilyMember> members = [];
 

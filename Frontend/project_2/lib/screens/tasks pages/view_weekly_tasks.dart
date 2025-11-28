@@ -75,7 +75,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
   ) {
     return Card(
       child: Container(
-        color: Colors.grey,
+        color: const Color.fromARGB(255, 99, 182, 250),
         height: 650,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +197,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
       taskWidgets.add(
         Card(
           child: Container(
-            color: Colors.grey,
+            color: const Color.fromARGB(255, 99, 182, 250),
             height: 650,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,7 +339,7 @@ class _ViewWeeklyTasksState extends State<ViewWeeklyTasks> {
         ModalRoute.of(context)?.settings.arguments as TasksForTheWeek;
 
     return Scaffold(
-      appBar: AppBar(title: Text("Add Task"), centerTitle: true),
+      appBar: AppBar(title: Text("Viewing weekly task"), centerTitle: true),
       drawer: TasksDrawer(),
 
       body: Padding(

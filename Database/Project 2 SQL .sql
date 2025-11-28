@@ -66,6 +66,7 @@ CREATE TABLE won_reward(
 	reward_id INT NOT NULL,
 	family_member_id INT NOT NULL,
 	date_rewarded DATETIME NOT NULL,
+    PRIMARY KEY (reward_id, family_member_id),
 	FOREIGN KEY (reward_id) REFERENCES reward(reward_id),
 	FOREIGN KEY (family_member_id) REFERENCES family_member(family_member_id)
 );

@@ -225,19 +225,19 @@ public partial class Project2DatabaseContext : DbContext
 
         modelBuilder.Entity<WonReward>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("won_reward");
+            entity.HasKey(e => new { e.RewardId, e.FamilyMemberId })
+                .HasName("PRIMARY")
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+
+            entity.ToTable("won_reward");
 
             entity.HasIndex(e => e.FamilyMemberId, "family_member_id");
 
-            entity.HasIndex(e => e.RewardId, "reward_id");
-
+            entity.Property(e => e.RewardId).HasColumnName("reward_id");
+            entity.Property(e => e.FamilyMemberId).HasColumnName("family_member_id");
             entity.Property(e => e.DateRewarded)
                 .HasColumnType("datetime")
                 .HasColumnName("date_rewarded");
-            entity.Property(e => e.FamilyMemberId).HasColumnName("family_member_id");
-            entity.Property(e => e.RewardId).HasColumnName("reward_id");
 
             
 
